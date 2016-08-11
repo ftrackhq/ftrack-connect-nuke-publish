@@ -53,11 +53,19 @@ setup(
         '': 'source'
     },
     setup_requires=[
-        'sphinx >= 1.2.2, < 2',
-        'sphinx_rtd_theme >= 0.1.6, < 2',
-        'lowdown >= 0.1.0, < 2'
+        # 'sphinx >= 1.2.2, < 2',
+        # 'sphinx_rtd_theme >= 0.1.6, < 2',
+        # 'lowdown >= 0.1.0, < 2'
     ],
     install_requires=[
+        'pyblish-base',
+        'ftrack-connect-pipeline'
+    ],
+    dependency_links=[
+        (
+            'git+ssh://git@bitbucket.org/ftrack/ftrack-connect-pipeline.git'
+            '#egg=ftrack-connect-pipeline-0.1.0'
+        )
     ],
     tests_require=[
         'pytest >= 2.3.5, < 3'
