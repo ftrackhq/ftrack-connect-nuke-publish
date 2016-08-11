@@ -2,14 +2,30 @@
 ftrack-connect-nuke-publish
 ###############################
 
-A dialog to publish assets from Nuke to ftrack using pyblish.
+This repository contains a publish dialog for Nuke. It is meant to be used as a
+Connect plugin.
 
 *************
 Documentation
 *************
 
-Full documentation, including installation and setup guides, can be found at
-http://ftrack-connect-nuke-publish.rtd.ftrack.com/en/stable/
+Installation guide
+==================
+
+#.  git clone git@bitbucket.org:ftrack/ftrack-connect-nuke-publish.git to
+    <connect-plugin-directory>.
+#.  cd to <connect-plugin-directory>/ftrack-connect-nuke-publish/
+#.  Install all dependencies to a ftrack-connect-nuke-publish into a directory
+    with `pip install --target=dependencies --verbose --process-dependency-links .`
+
+Usage
+=====
+
+#.  Start ftrack Connect (close and start if already running).
+#.  Start Nuke on a task.
+#.  Create a write node and render material.
+#.  Open menu `ftrack new` and choose Media.
+#.  Fill out form and try to publish.
 
 *********************
 Copyright and license
