@@ -16,7 +16,9 @@ Installation guide
     <connect-plugin-directory>.
 #.  cd to <connect-plugin-directory>/ftrack-connect-nuke-publish/
 #.  Install all dependencies to a ftrack-connect-nuke-publish into a directory
-    with `pip install --target=dependencies --verbose --process-dependency-links .`
+    with::
+
+        pip install --target=dependencies --verbose --process-dependency-links .
 
 Usage
 =====
