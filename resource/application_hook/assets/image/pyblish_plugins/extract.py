@@ -28,15 +28,6 @@ class ExtractMedia(pyblish.api.InstancePlugin):
 
     families = ['write', 'read']
 
-    @classmethod
-    def _ftrack_options(cls, instance):
-        '''Return options.'''
-        return [{
-            'type': 'text',
-            'label': 'Path',
-            'name': 'path'
-        }]
-
     def process(self, instance):
         '''Process *instance* and extract media.'''
         if instance.data.get('publish'):
