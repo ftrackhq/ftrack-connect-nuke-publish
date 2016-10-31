@@ -8,7 +8,9 @@ class IntegratorCreateAsset(pyblish.api.ContextPlugin):
 
     def process(self, context):
         '''Process *context* create asset.'''
-        print 'step1'
+
+        print "*** Creating asset!!!"
+
         ftrack_entity = context.data['ftrack_entity']
         session = ftrack_entity.session
 
@@ -54,9 +56,8 @@ class IntegratorCreateAsset(pyblish.api.ContextPlugin):
             list(context)
         )
 
-
 class IntegratorCreateComponents(pyblish.api.InstancePlugin):
-    '''Extract maya cameras from scene.'''
+    '''Extract nuke write nodes from comp.'''
 
     order = pyblish.api.IntegratorOrder + 0.1
 
@@ -64,6 +65,9 @@ class IntegratorCreateComponents(pyblish.api.InstancePlugin):
 
     def process(self, instance):
         '''Process *instance* and create components.'''
+
+        print "*** Creating components!!!"
+
         import ftrack_api.symbol
         context = instance.context
         asset_version = context.data['asset_version']
@@ -81,7 +85,6 @@ class IntegratorCreateComponents(pyblish.api.InstancePlugin):
 
         session.commit()
 
-
 class IntegratorPublishVersion(pyblish.api.ContextPlugin):
     '''Mark asset version as published.'''
 
@@ -89,6 +92,9 @@ class IntegratorPublishVersion(pyblish.api.ContextPlugin):
 
     def process(self, context):
         '''Process *context*.'''
+
+        print "*** Publishing version!!!"
+
         asset_version = context.data['asset_version']
         session = asset_version.session
 
