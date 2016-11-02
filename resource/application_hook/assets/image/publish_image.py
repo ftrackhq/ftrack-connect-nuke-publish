@@ -15,7 +15,7 @@ class PublishImage(ftrack_connect_pipeline.asset.PyblishAsset):
         options = [{
             'type': 'group',
             'label': 'Nuke Media',
-            'name': 'nuke_media',
+            'name': 'nuke_media_options',
             'options': [{
                 'name': 'force_copy',
                 'label': 'Force Copy Files',
@@ -42,25 +42,12 @@ class PublishImage(ftrack_connect_pipeline.asset.PyblishAsset):
             if instance.data['family'] in ('ftrack.nuke.write', ):
                 options.append({
                     'label': instance.name,
-                    'name': instance.id,
+                    'name': instance.name,
                     'value': True
                 })
 
         return options
 
-    def get_item_options(self, publish_data, name):
-        '''Return options for publishable item with *name*.'''
-        options = []
-        return options
-
-    def get_scene_selection(self):
-        '''Return a list of names for scene selection.'''
-        names = []
-        for node in nuke.allNodes():
-            if node.Class() == 'Write':
-                names.append(node.name())
-
-        return names
 
 def register(session):
     '''Subscribe to *session*.'''
