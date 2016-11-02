@@ -24,7 +24,6 @@ class ExtractWriteNodes(pyblish.api.InstancePlugin):
         )
 
         write_node = nuke.toNode(instance.name)
-
         file_comp = str(write_node['file'].value())
         proxy_comp = str(write_node['proxy'].value())
         name_comp = str(write_node['name'].value()).strip()
@@ -80,7 +79,7 @@ class ExtractWriteNodes(pyblish.api.InstancePlugin):
             'last'              : last,
             'node_name'         : name_comp
         }
-        print "*** new component: ", new_component
+
         instance.data['ftrack_components'].append(new_component)
 
         if proxy_comp != '':
@@ -91,9 +90,11 @@ class ExtractWriteNodes(pyblish.api.InstancePlugin):
                 'last'              : last,
                 'node_name'         : name_comp
             }
-            instance.data['ftrack_components'].append(new_component)
-            print "*** new component: ", new_component
 
+            instance.data['ftrack_components'].append(new_component)
+
+        # todo: Handle copy files if enabled...
+        # todo: Attach nukescript if enabled...
 
 pyblish.api.register_plugin(ExtractWriteNodes)
 

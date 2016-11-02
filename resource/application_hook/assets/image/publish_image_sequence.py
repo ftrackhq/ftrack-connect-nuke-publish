@@ -5,11 +5,9 @@ import ftrack_connect_pipeline.asset
 
 import nuke
 
-IDENTIFIER = 'image'
 
-
-class PublishImage(ftrack_connect_pipeline.asset.PyblishAsset):
-    '''Handle publish of maya image.'''
+class PublishImageSequence(ftrack_connect_pipeline.asset.PyblishAsset):
+    '''Handle publish of nuke image sequences.'''
 
     def get_options(self, publish_data):
         '''Return global options.'''
@@ -29,7 +27,7 @@ class PublishImage(ftrack_connect_pipeline.asset.PyblishAsset):
         }]
 
         default_options = super(
-            PublishImage, self
+            PublishImageSequence, self
         ).get_options(publish_data)
 
         options += default_options
@@ -56,8 +54,8 @@ def register(session):
         return
 
     image_asset = ftrack_connect_pipeline.asset.Asset(
-        identifier=IDENTIFIER,
-        publish_asset=PublishImage(
+        identifier='image_sequence',
+        publish_asset=PublishImageSequence(
             label='Media',
             description='publish media to ftrack.',
             icon='http://www.clipartbest.com/cliparts/9Tp/erx/9Tperxqrc.png'

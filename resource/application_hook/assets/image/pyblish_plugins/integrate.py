@@ -44,16 +44,7 @@ class IntegratorCreateAsset(pyblish.api.ContextPlugin):
         )
 
         session.commit()
-
         context.data['asset_version'] = asset_version
-
-        print (
-            'Integrating with options',
-            asset_version,
-            context.data.get('options', {}),
-            context.data.get('ftrack_entity'),
-            list(context)
-        )
 
 
 class IntegratorCreateComponents(pyblish.api.InstancePlugin):
@@ -79,8 +70,6 @@ class IntegratorCreateComponents(pyblish.api.InstancePlugin):
                 )
             else:
                 sequence_path = unicode(component_item['file_path'] % start)
-
-            print "*** sequence path = ", sequence_path
 
             session.create_component(
                 sequence_path,
