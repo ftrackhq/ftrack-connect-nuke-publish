@@ -1,5 +1,8 @@
+
 import pyblish.api
+
 import ftrack_connect_pipeline.util
+
 import nuke
 
 
@@ -7,8 +10,6 @@ class FtrackPublishCollector(pyblish.api.ContextPlugin):
     '''Prepare ftrack publish.'''
 
     order = pyblish.api.CollectorOrder
-
-    families = ['*']
 
     def process(self, context):
         '''Process *context* and add ftrack entity.'''
@@ -21,14 +22,9 @@ class CollectWriteNodes(pyblish.api.ContextPlugin):
 
     order = pyblish.api.CollectorOrder
 
-    families = ['ftrack.nuke.write']
-
     def process(self, context):
         '''Process *context* and add nuke write node instances.'''
-
         for node in nuke.allNodes():
-            print "*** Collecting write nodes!!!"
-
             if node.Class() == 'Write':
                 instance = context.create_instance(node.name(), family='ftrack.nuke.write')
                 instance.data['publish'] = True
@@ -37,3 +33,7 @@ class CollectWriteNodes(pyblish.api.ContextPlugin):
 
 pyblish.api.register_plugin(FtrackPublishCollector)
 pyblish.api.register_plugin(CollectWriteNodes)
+
+# Silence ftrack warnings about missing register functions.
+def register(session):
+    pass

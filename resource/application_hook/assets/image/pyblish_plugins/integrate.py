@@ -1,3 +1,4 @@
+
 import pyblish.api
 
 
@@ -8,8 +9,6 @@ class IntegratorCreateAsset(pyblish.api.ContextPlugin):
 
     def process(self, context):
         '''Process *context* create asset.'''
-
-        print "*** Creating asset!!!"
 
         ftrack_entity = context.data['ftrack_entity']
         session = ftrack_entity.session
@@ -56,17 +55,14 @@ class IntegratorCreateAsset(pyblish.api.ContextPlugin):
             list(context)
         )
 
+
 class IntegratorCreateComponents(pyblish.api.InstancePlugin):
     '''Extract nuke write nodes from comp.'''
 
     order = pyblish.api.IntegratorOrder + 0.1
 
-    families = ['*']
-
     def process(self, instance):
         '''Process *instance* and create components.'''
-
-        print "*** Creating components!!!"
 
         import ftrack_api.symbol
         context = instance.context
@@ -74,16 +70,31 @@ class IntegratorCreateComponents(pyblish.api.InstancePlugin):
         session = asset_version.session
         location = session.pick_location()
         for component_item in instance.data.get('ftrack_components', []):
+            start = int(float(component_item['first']))
+            end = int(float(component_item['last']))
+
+            if start != end:
+                sequence_path = u'{0} [{1}-{2}]'.format(
+                    component_item['file_path'], start, end
+                )
+            else:
+                sequence_path = unicode(component_item['file_path'] % start)
+
+            print "*** sequence path = ", sequence_path
+
             session.create_component(
-                component_item['path'],
+                sequence_path,
                 {
                     'version_id': asset_version['id'],
-                    'name': component_item['name']
+                    'name': component_item['component_name']
                 },
                 location=location
             )
 
+            # todo: handle metadata and thumbnails here...
+
         session.commit()
+
 
 class IntegratorPublishVersion(pyblish.api.ContextPlugin):
     '''Mark asset version as published.'''
@@ -92,8 +103,6 @@ class IntegratorPublishVersion(pyblish.api.ContextPlugin):
 
     def process(self, context):
         '''Process *context*.'''
-
-        print "*** Publishing version!!!"
 
         asset_version = context.data['asset_version']
         session = asset_version.session
@@ -105,3 +114,7 @@ class IntegratorPublishVersion(pyblish.api.ContextPlugin):
 pyblish.api.register_plugin(IntegratorCreateAsset)
 pyblish.api.register_plugin(IntegratorCreateComponents)
 pyblish.api.register_plugin(IntegratorPublishVersion)
+
+# Silence ftrack warnings about missing register functions.
+def register(session):
+    pass
