@@ -66,6 +66,8 @@ class IntegratorCreateImageSequenceComponents(pyblish.api.InstancePlugin):
         asset_version = context.data['asset_version']
         session = asset_version.session
         location = session.pick_location()
+        comment = context.data['options'].get('comment_field', {}).get('comment', 'No comment set')
+
         for component_item in instance.data.get('ftrack_components', []):
             component_name = component_item['component_name']
 
@@ -83,7 +85,8 @@ class IntegratorCreateImageSequenceComponents(pyblish.api.InstancePlugin):
                 sequence_path,
                 {
                     'version_id': asset_version['id'],
-                    'name': component_item['component_name']
+                    'name': component_item['component_name'],
+                    'comment': comment
                 },
                 location=location
             )
@@ -98,9 +101,10 @@ class IntegratorCreateNukeScriptComponent(pyblish.api.ContextPlugin):
 
     def process(self, context):
 
+        comment = context.data['options'].get('comment_field', {}).get('comment', 'No comment set')
         context_options = context.data['options'].get('nuke_media', {})
 
-        if context_options['attach_nuke_script']:
+        if context_options.get('attach_nuke_script', False):
             import ftrack_api.symbol
             asset_version = context.data['asset_version']
             session = asset_version.session
@@ -118,7 +122,8 @@ class IntegratorCreateNukeScriptComponent(pyblish.api.ContextPlugin):
                 nukescript_path,
                 {
                     'version_id': asset_version['id'],
-                    'name': 'nukescript'
+                    'name': 'nukescript',
+                    'comment': comment
                 },
                 location=location
             )
