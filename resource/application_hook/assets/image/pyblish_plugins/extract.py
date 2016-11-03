@@ -19,7 +19,7 @@ class ExtractWriteNodes(pyblish.api.InstancePlugin):
     def process(self, instance):
         '''Process *instance* and extract media.'''
 
-        media_options = instance.context.data['options'].get(
+        context_options = instance.context.data['options'].get(
             'nuke_media_options', {}
         )
 
@@ -93,8 +93,6 @@ class ExtractWriteNodes(pyblish.api.InstancePlugin):
 
             instance.data['ftrack_components'].append(new_component)
 
-        # todo: Handle copy files if enabled...
-        # todo: Attach nukescript if enabled...
 
 pyblish.api.register_plugin(ExtractWriteNodes)
 

@@ -14,12 +14,8 @@ class PublishImageSequence(ftrack_connect_pipeline.asset.PyblishAsset):
         options = [{
             'type': 'group',
             'label': 'Nuke Media',
-            'name': 'nuke_media_options',
+            'name': 'nuke_media',
             'options': [{
-                'name': 'force_copy',
-                'label': 'Force Copy Files',
-                'type': 'boolean',
-            }, {
                 'name': 'attach_nuke_script',
                 'label': 'Attach Nuke Script',
                 'type': 'boolean',

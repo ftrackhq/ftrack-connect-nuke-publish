@@ -1,6 +1,10 @@
 
 import pyblish.api
 
+import nuke
+
+import tempfile
+
 
 class IntegratorCreateAsset(pyblish.api.ContextPlugin):
     '''Create asset and prepare publish.'''
@@ -47,10 +51,12 @@ class IntegratorCreateAsset(pyblish.api.ContextPlugin):
         context.data['asset_version'] = asset_version
 
 
-class IntegratorCreateComponents(pyblish.api.InstancePlugin):
-    '''Extract nuke write nodes from comp.'''
+class IntegratorCreateImageSequenceComponents(pyblish.api.InstancePlugin):
+    '''Create ftrack components.'''
 
     order = pyblish.api.IntegratorOrder + 0.1
+
+    families = ['ftrack.nuke.write']
 
     def process(self, instance):
         '''Process *instance* and create components.'''
@@ -61,6 +67,8 @@ class IntegratorCreateComponents(pyblish.api.InstancePlugin):
         session = asset_version.session
         location = session.pick_location()
         for component_item in instance.data.get('ftrack_components', []):
+            component_name = component_item['component_name']
+
             start = int(float(component_item['first']))
             end = int(float(component_item['last']))
 
@@ -80,9 +88,42 @@ class IntegratorCreateComponents(pyblish.api.InstancePlugin):
                 location=location
             )
 
-            # todo: handle metadata and thumbnails here...
-
         session.commit()
+
+
+class IntegratorCreateNukeScriptComponent(pyblish.api.ContextPlugin):
+    '''Create ftrack nukescript component if the used enabled it.'''
+
+    order = pyblish.api.IntegratorOrder + 0.1
+
+    def process(self, context):
+
+        context_options = context.data['options'].get('nuke_media', {})
+
+        if context_options['attach_nuke_script']:
+            import ftrack_api.symbol
+            asset_version = context.data['asset_version']
+            session = asset_version.session
+            location = session.pick_location()
+
+            nukescript_path = ""
+            if nuke.Root().name() == 'Root':
+                tmp_script = tempfile.NamedTemporaryFile(suffix='.nk')
+                nuke.scriptSaveAs(tmp_script.name)
+                nukescript_path = tmp_script.name
+            else:
+                nukescript_path = nuke.root()['name'].value()
+
+            session.create_component(
+                nukescript_path,
+                {
+                    'version_id': asset_version['id'],
+                    'name': 'nukescript'
+                },
+                location=location
+            )
+
+            session.commit()
 
 
 class IntegratorPublishVersion(pyblish.api.ContextPlugin):
@@ -101,7 +142,8 @@ class IntegratorPublishVersion(pyblish.api.ContextPlugin):
 
 
 pyblish.api.register_plugin(IntegratorCreateAsset)
-pyblish.api.register_plugin(IntegratorCreateComponents)
+pyblish.api.register_plugin(IntegratorCreateImageSequenceComponents)
+pyblish.api.register_plugin(IntegratorCreateNukeScriptComponent)
 pyblish.api.register_plugin(IntegratorPublishVersion)
 
 # Silence ftrack warnings about missing register functions.
