@@ -40,6 +40,7 @@ python_dependencies = os.path.join(
 
 
 def on_application_launch(event):
+
     '''Handle application launch and add environment to *event*.'''
     ftrack_connect.application.appendPath(
         publish_actions_path,
@@ -77,8 +78,7 @@ def register(registry):
         # Not a session, let us early out to avoid registering multiple times.
         return
 
-    #: TODO: Only apply when Nuke launches.
     ftrack.EVENT_HUB.subscribe(
-        'topic=ftrack.connect.application.launch',
+        'topic=ftrack.connect.application.launch and data.application.identifier=nuke_*',
         on_application_launch
     )
