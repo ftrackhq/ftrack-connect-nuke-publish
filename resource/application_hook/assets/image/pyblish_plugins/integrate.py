@@ -1,8 +1,8 @@
+# :coding: utf-8
+# :copyright: Copyright (c) 2016 ftrack
 
 import pyblish.api
-
 import nuke
-
 import tempfile
 
 
@@ -110,7 +110,7 @@ class IntegratorCreateNukeScriptComponent(pyblish.api.ContextPlugin):
             session = asset_version.session
             location = session.pick_location()
 
-            nukescript_path = ""
+            nukescript_path = ''
             if nuke.Root().name() == 'Root':
                 tmp_script = tempfile.NamedTemporaryFile(suffix='.nk')
                 nuke.scriptSaveAs(tmp_script.name)
@@ -150,7 +150,3 @@ pyblish.api.register_plugin(IntegratorCreateAsset)
 pyblish.api.register_plugin(IntegratorCreateImageSequenceComponents)
 pyblish.api.register_plugin(IntegratorCreateNukeScriptComponent)
 pyblish.api.register_plugin(IntegratorPublishVersion)
-
-# Silence ftrack warnings about missing register functions.
-def register(session):
-    pass

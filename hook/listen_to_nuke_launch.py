@@ -1,11 +1,14 @@
+# :coding: utf-8
+# :copyright: Copyright (c) 2016 ftrack
+
 import os
 
 import ftrack
 import ftrack_connect.application
 
 '''
-    This connect plugin hook will add the pyblish maya prototype to the
-    environment when Maya is launching from Connect. This hook should only
+    This connect plugin hook will add the pyblish nuke prototype to the
+    environment when Nuke is launching from Connect. This hook should only
     be sourced by Connect.
 '''
 
@@ -74,7 +77,7 @@ def register(registry):
         # Not a session, let us early out to avoid registering multiple times.
         return
 
-    #: TODO: Only apply when Maya application launches.
+    #: TODO: Only apply when Nuke launches.
     ftrack.EVENT_HUB.subscribe(
         'topic=ftrack.connect.application.launch',
         on_application_launch

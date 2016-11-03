@@ -1,10 +1,9 @@
+# :coding: utf-8
+# :copyright: Copyright (c) 2016 ftrack
 
 import pyblish.api
-
 import nuke
-
 import clique
-
 import os
 import glob
 
@@ -29,8 +28,8 @@ class ExtractWriteNodes(pyblish.api.InstancePlugin):
         name_comp = str(write_node['name'].value()).strip()
 
         # use the timeline to define the amount of frames
-        first = str(int(nuke.root().knob("first_frame").value()))
-        last = str(int(nuke.root().knob("last_frame").value()))
+        first = str(int(nuke.root().knob('first_frame').value()))
+        last = str(int(nuke.root().knob('last_frame').value()))
 
         # then in case check if the limit are set
         if write_node['use_limit'].value():
@@ -74,7 +73,7 @@ class ExtractWriteNodes(pyblish.api.InstancePlugin):
 
         new_component = {
             'file_path'         : file_comp,
-            'component_name'    : comp_name_comp + "_" + name_comp,
+            'component_name'    : comp_name_comp + '_' + name_comp,
             'first'             : first,
             'last'              : last,
             'node_name'         : name_comp
@@ -85,7 +84,7 @@ class ExtractWriteNodes(pyblish.api.InstancePlugin):
         if proxy_comp != '':
             new_component = {
                 'file_path'         : proxy_comp,
-                'component_name'    : comp_name_comp + "_" + name_comp + "_proxy",
+                'component_name'    : comp_name_comp + '_' + name_comp + '_proxy',
                 'first'             : first,
                 'last'              : last,
                 'node_name'         : name_comp
@@ -95,7 +94,3 @@ class ExtractWriteNodes(pyblish.api.InstancePlugin):
 
 
 pyblish.api.register_plugin(ExtractWriteNodes)
-
-# Silence ftrack warnings about missing register functions.
-def register(session):
-    pass

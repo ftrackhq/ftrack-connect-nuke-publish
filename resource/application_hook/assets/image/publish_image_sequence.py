@@ -1,8 +1,8 @@
+# :coding: utf-8
+# :copyright: Copyright (c) 2016 ftrack
 
 import ftrack_api
-
 import ftrack_connect_pipeline.asset
-
 import nuke
 
 
@@ -49,7 +49,7 @@ def register(session):
     if not isinstance(session, ftrack_api.Session):
         return
 
-    image_asset = ftrack_connect_pipeline.asset.Asset(
+    image_sequence_asset = ftrack_connect_pipeline.asset.Asset(
         identifier='image_sequence',
         publish_asset=PublishImageSequence(
             label='Media',
@@ -59,4 +59,4 @@ def register(session):
     )
     # Register media asset on session. This makes sure that discover is called
     # for import and publish.
-    image_asset.register(session)
+    image_sequence_asset.register(session)

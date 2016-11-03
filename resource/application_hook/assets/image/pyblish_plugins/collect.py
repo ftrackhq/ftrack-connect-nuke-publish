@@ -1,8 +1,8 @@
+# :coding: utf-8
+# :copyright: Copyright (c) 2016 ftrack
 
 import pyblish.api
-
 import ftrack_connect_pipeline.util
-
 import nuke
 
 
@@ -33,7 +33,3 @@ class CollectWriteNodes(pyblish.api.ContextPlugin):
 
 pyblish.api.register_plugin(FtrackPublishCollector)
 pyblish.api.register_plugin(CollectWriteNodes)
-
-# Silence ftrack warnings about missing register functions.
-def register(session):
-    pass
