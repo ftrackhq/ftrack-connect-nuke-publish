@@ -40,8 +40,12 @@ python_dependencies = os.path.join(
 
 
 def on_application_launch(event):
-
     '''Handle application launch and add environment to *event*.'''
+
+    # Filter out Nuke studio.
+    if event['data']['application']['identifier'].startswith('nuke_studio'):
+        return
+
     ftrack_connect.application.appendPath(
         publish_actions_path,
         'FTRACK_EVENT_PLUGIN_PATH',
@@ -79,6 +83,6 @@ def register(registry):
         return
 
     ftrack.EVENT_HUB.subscribe(
-        'topic=ftrack.connect.application.launch and data.application.identifier=nuke_*',
+        'topic=ftrack.connect.application.launch and data.application.identifier=nuke*',
         on_application_launch
     )
