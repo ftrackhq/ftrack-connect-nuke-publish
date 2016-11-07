@@ -23,4 +23,21 @@ class CollectWriteNodes(pyblish.api.ContextPlugin):
                 instance.data['ftrack_components'] = []
 
 
+class CollectNukeScript(pyblish.api.ContextPlugin):
+    '''Collect nuke write nodes from scene.'''
+
+    order = pyblish.api.CollectorOrder
+
+    def process(self, context):
+        '''Process *context* and add nuke write node instances.'''
+        self.log.debug('Started collecting scene script.')
+
+        instance = context.create_instance(
+            'Script', family='ftrack.nuke.script'
+        )
+        instance.data['publish'] = True
+        instance.data['ftrack_components'] = []
+
+
+pyblish.api.register_plugin(CollectNukeScript)
 pyblish.api.register_plugin(CollectWriteNodes)
