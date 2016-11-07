@@ -22,6 +22,13 @@ class ExtractWriteNodes(pyblish.api.InstancePlugin):
             'nuke_media_options', {}
         )
 
+        self.log.debug(
+            'Started extracting write nodes {0!r} with options '
+            '{1!r}.'.format(
+                instance.name, context_options
+            )
+        )
+
         write_node = nuke.toNode(instance.name)
         file_comp = str(write_node['file'].value())
         proxy_comp = str(write_node['proxy'].value())
@@ -72,25 +79,36 @@ class ExtractWriteNodes(pyblish.api.InstancePlugin):
             comp_name_comp = name_comp
 
         new_component = {
-            'file_path'         : file_comp,
-            'component_name'    : comp_name_comp + '_' + name_comp,
-            'first'             : first,
-            'last'              : last,
-            'node_name'         : name_comp
+            'file_path': file_comp,
+            'component_name': comp_name_comp + '_' + name_comp,
+            'first': first,
+            'last': last,
+            'node_name': name_comp
         }
 
         instance.data['ftrack_components'].append(new_component)
+        self.log.debug(
+            'Extracted {0!r} from {1!r}'.format(
+                new_component, instance.name
+            )
+        )
 
         if proxy_comp != '':
             new_component = {
-                'file_path'         : proxy_comp,
-                'component_name'    : comp_name_comp + '_' + name_comp + '_proxy',
-                'first'             : first,
-                'last'              : last,
-                'node_name'         : name_comp
+                'file_path': proxy_comp,
+                'component_name': comp_name_comp + '_' + name_comp + '_proxy',
+                'first': first,
+                'last': last,
+                'node_name': name_comp
             }
 
             instance.data['ftrack_components'].append(new_component)
+
+            self.log.debug(
+                'Extracted {0!r} from {1!r}'.format(
+                    new_component, instance.name
+                )
+            )
 
 
 pyblish.api.register_plugin(ExtractWriteNodes)

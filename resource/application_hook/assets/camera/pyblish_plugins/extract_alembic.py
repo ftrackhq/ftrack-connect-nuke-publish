@@ -41,6 +41,13 @@ class ExtractCameraAlembic(pyblish.api.InstancePlugin):
     def process(self, instance):
         '''Process *instance*.'''
 
+        self.log.debug(
+            'Started extracting camera {0!r} with options '
+            '{1!r}.'.format(
+                instance.name, instance.data['options']
+            )
+        )
+
         write_node = instance.data['nuke_write']
         temporary_path = tempfile.mkstemp(suffix='.abc')[-1]
         write_node['file'].setValue(temporary_path)
@@ -51,8 +58,10 @@ class ExtractCameraAlembic(pyblish.api.InstancePlugin):
             'path': temporary_path,
         }
 
-        print 'Adding new component: %s' % new_component
         instance.data['ftrack_components'].append(new_component)
+        self.log.debug(
+            'Extracted {0!r} from {1!r}'.format(new_component, instance.name)
+        )
 
 
 class PostCameraAlembicExtract(pyblish.api.InstancePlugin):

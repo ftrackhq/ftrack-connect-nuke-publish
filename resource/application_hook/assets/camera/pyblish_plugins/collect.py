@@ -12,6 +12,8 @@ class CollectCameras(pyblish.api.ContextPlugin):
         '''Process *context* and add maya camera instances.'''
         import nuke
 
+        self.log.debug('Started collecting camera from scene.')
+
         for node in nuke.allNodes():
             if node.Class() == 'Camera' or node.Class() == 'Camera2':
                 instance = context.create_instance(
