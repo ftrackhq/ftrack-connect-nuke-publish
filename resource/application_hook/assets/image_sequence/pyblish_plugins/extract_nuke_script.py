@@ -27,6 +27,11 @@ class ExtractNukeScriptComponent(pyblish.api.InstancePlugin):
         }
 
         instance.data['ftrack_components'].append(new_component)
+        self.log.debug(
+            'Extracted {0!r} from {1!r}'.format(
+                new_component, instance.name
+            )
+        )
 
 
 pyblish.api.register_plugin(ExtractNukeScriptComponent)
