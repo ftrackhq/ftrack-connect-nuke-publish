@@ -1,3 +1,6 @@
+# :coding: utf-8
+# :copyright: Copyright (c) 2014 ftrack
+
 import pyblish.api
 
 
@@ -8,12 +11,13 @@ class IntegratorCreateAsset(pyblish.api.ContextPlugin):
 
     def process(self, context):
         '''Process *context* create asset.'''
-        print 'step1'
         ftrack_entity = context.data['ftrack_entity']
         session = ftrack_entity.session
 
         asset_type_id = context.data['options']['asset']['asset_type']
         asset_name = context.data['options']['asset']['asset_name']
+        comment = context.data['options'].get('comment_field', {}).get('comment', 'No comment set')
+
         context_id = ftrack_entity['id']
 
         asset = session.query(
@@ -38,7 +42,8 @@ class IntegratorCreateAsset(pyblish.api.ContextPlugin):
             'AssetVersion',
             {
                 'asset': asset,
-                'is_published': False
+                'is_published': False,
+                'comment': comment
             }
         )
 

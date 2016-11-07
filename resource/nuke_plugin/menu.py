@@ -1,10 +1,12 @@
-import nuke
+# :coding: utf-8
+# :copyright: Copyright (c) 2016 ftrack
 
+import nuke
 import ftrack_api
 import ftrack_connect_pipeline.asset
 
-session = ftrack_api.Session()
 
+session = ftrack_api.Session()
 
 def open_publish():
     '''Open publish dialog.'''
