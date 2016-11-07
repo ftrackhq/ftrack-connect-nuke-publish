@@ -70,17 +70,16 @@ class ExtractWriteNodes(pyblish.api.InstancePlugin):
                     last = str(indexes[-1])
                     break
 
-        try:
-            comp_name_comp = write_node['fcompname'].value()
-        except:
-            comp_name_comp = ''
-
-        if comp_name_comp == '':
-            comp_name_comp = name_comp
+        if first != last:
+            sequence_path = u'{0} [{1}-{2}]'.format(
+                file_comp, first, last
+            )
+        else:
+            sequence_path = unicode(file_comp % first)
 
         new_component = {
-            'file_path': file_comp,
-            'component_name': comp_name_comp + '_' + name_comp,
+            'path': sequence_path,
+            'name': name_comp,
             'first': first,
             'last': last,
             'node_name': name_comp
@@ -94,9 +93,17 @@ class ExtractWriteNodes(pyblish.api.InstancePlugin):
         )
 
         if proxy_comp != '':
+
+            if first != last:
+                sequence_path = u'{0} [{1}-{2}]'.format(
+                    proxy_comp, first, last
+                )
+            else:
+                sequence_path = unicode(proxy_comp % first)
+
             new_component = {
-                'file_path': proxy_comp,
-                'component_name': comp_name_comp + '_' + name_comp + '_proxy',
+                'file_path': new_component,
+                'name': name_comp + '_proxy',
                 'first': first,
                 'last': last,
                 'node_name': name_comp

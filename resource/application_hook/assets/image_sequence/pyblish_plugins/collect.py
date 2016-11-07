@@ -2,7 +2,6 @@
 # :copyright: Copyright (c) 2016 ftrack
 
 import pyblish.api
-import nuke
 
 
 class CollectWriteNodes(pyblish.api.ContextPlugin):
@@ -12,7 +11,7 @@ class CollectWriteNodes(pyblish.api.ContextPlugin):
 
     def process(self, context):
         '''Process *context* and add nuke write node instances.'''
-
+        import nuke
         self.log.debug('Started collecting write nodes from scene.')
 
         for node in nuke.allNodes():

@@ -6,48 +6,48 @@ import nuke
 import tempfile
 
 
-class IntegratorCreateImageSequenceComponents(pyblish.api.InstancePlugin):
-    '''Create ftrack components.'''
+# class IntegratorCreateImageSequenceComponents(pyblish.api.InstancePlugin):
+#     '''Create ftrack components.'''
 
-    order = pyblish.api.IntegratorOrder + 0.1
+#     order = pyblish.api.IntegratorOrder + 0.1
 
-    families = ['ftrack.nuke.write']
+#     families = ['ftrack.nuke.write']
 
-    def process(self, instance):
-        '''Process *instance* and create components.'''
+#     def process(self, instance):
+#         '''Process *instance* and create components.'''
 
-        import ftrack_api.symbol
-        context = instance.context
-        asset_version = context.data['asset_version']
-        session = asset_version.session
-        location = session.pick_location()
-        comment = context.data['options'].get(
-            'comment_field', {}
-        ).get('comment', 'No comment set')
+#         import ftrack_api.symbol
+#         context = instance.context
+#         asset_version = context.data['asset_version']
+#         session = asset_version.session
+#         location = session.pick_location()
+#         comment = context.data['options'].get(
+#             'comment_field', {}
+#         ).get('comment', 'No comment set')
 
-        for component_item in instance.data.get('ftrack_components', []):
+#         for component_item in instance.data.get('ftrack_components', []):
 
-            start = int(float(component_item['first']))
-            end = int(float(component_item['last']))
+#             start = int(float(component_item['first']))
+#             end = int(float(component_item['last']))
 
-            if start != end:
-                sequence_path = u'{0} [{1}-{2}]'.format(
-                    component_item['file_path'], start, end
-                )
-            else:
-                sequence_path = unicode(component_item['file_path'] % start)
+#             if start != end:
+#                 sequence_path = u'{0} [{1}-{2}]'.format(
+#                     component_item['file_path'], start, end
+#                 )
+#             else:
+#                 sequence_path = unicode(component_item['file_path'] % start)
 
-            session.create_component(
-                sequence_path,
-                {
-                    'version_id': asset_version['id'],
-                    'name': component_item['component_name'],
-                    'comment': comment
-                },
-                location=location
-            )
+#             session.create_component(
+#                 sequence_path,
+#                 {
+#                     'version_id': asset_version['id'],
+#                     'name': component_item['component_name'],
+#                     'comment': comment
+#                 },
+#                 location=location
+#             )
 
-        session.commit()
+#         session.commit()
 
 
 class IntegratorCreateNukeScriptComponent(pyblish.api.ContextPlugin):
@@ -56,7 +56,7 @@ class IntegratorCreateNukeScriptComponent(pyblish.api.ContextPlugin):
     order = pyblish.api.IntegratorOrder + 0.1
 
     def process(self, context):
-
+        import nuke
         comment = context.data['options'].get(
             'comment_field', {}
         ).get('comment', 'No comment set')
