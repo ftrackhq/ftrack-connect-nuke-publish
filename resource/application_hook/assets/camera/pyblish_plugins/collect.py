@@ -24,5 +24,11 @@ class CollectCameras(pyblish.api.ContextPlugin):
                 instance.data['publish'] = True
                 instance.data['ftrack_components'] = []
 
+                self.log.debug(
+                    'Collected camera instance {0!r} {1!r}.'.format(
+                        node.name(), instance
+                    )
+                )
+
 
 pyblish.api.register_plugin(CollectCameras)
