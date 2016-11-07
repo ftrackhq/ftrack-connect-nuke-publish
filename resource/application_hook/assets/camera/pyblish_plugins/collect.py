@@ -5,6 +5,7 @@ import pyblish.api
 
 
 class CollectCameras(pyblish.api.ContextPlugin):
+    '''Collect Cameras from Nuke.'''
 
     order = pyblish.api.CollectorOrder
 
