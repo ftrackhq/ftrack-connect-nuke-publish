@@ -12,6 +12,13 @@ class ExtractNukeScriptComponent(pyblish.api.InstancePlugin):
     families = ['ftrack.nuke.script']
 
     def process(self, instance):
+
+        self.log.debug(
+            'Started extracting nuke script {0!r}'.format(
+                instance.name
+            )
+        )
+
         import nuke
         nukescript_path = ''
         if nuke.Root().name() == 'Root':

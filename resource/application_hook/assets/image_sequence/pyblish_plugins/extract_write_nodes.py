@@ -16,6 +16,13 @@ class ExtractWriteNodes(pyblish.api.InstancePlugin):
 
     def process(self, instance):
         '''Process *instance* and extract media.'''
+
+        self.log.debug(
+            'Started extracting write node {0!r}'.format(
+                instance.name
+            )
+        )
+
         import nuke
         write_node = nuke.toNode(instance.name)
         file_comp = str(write_node['file'].value())

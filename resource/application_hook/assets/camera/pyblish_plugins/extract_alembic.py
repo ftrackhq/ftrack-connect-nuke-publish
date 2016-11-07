@@ -13,6 +13,13 @@ class PreCameraAlembicExtract(pyblish.api.InstancePlugin):
     families = ['ftrack.nuke.camera']
 
     def process(self, instance):
+
+        self.log.debug(
+            'Pre extracting nuke camera {0!r}'.format(
+                instance.name
+            )
+        )
+
         import nuke
         camera_node = nuke.toNode(instance.name)
 
@@ -72,6 +79,14 @@ class PostCameraAlembicExtract(pyblish.api.InstancePlugin):
     families = ['ftrack.nuke.camera']
 
     def process(self, instance):
+        '''Process *instance*.'''
+
+        self.log.debug(
+            'Post extracting nuke camera {0!r}'.format(
+                instance.name
+            )
+        )
+
         import nuke
         nuke.delete(instance.data['nuke_write'])
         nuke.delete(instance.data['nuke_scene'])
