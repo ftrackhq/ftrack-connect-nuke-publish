@@ -3,7 +3,6 @@
 
 import ftrack_api
 import ftrack_connect_pipeline.asset
-import nuke
 
 
 class PublishImageSequence(ftrack_connect_pipeline.asset.PyblishAsset):
@@ -16,7 +15,7 @@ class PublishImageSequence(ftrack_connect_pipeline.asset.PyblishAsset):
         for instance in publish_data:
             if instance.data['family'] in (
                 'ftrack.nuke.write', 'ftrack.nuke.script'
-                ):
+            ):
                 options.append({
                     'label': instance.name,
                     'name': instance.name,

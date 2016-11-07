@@ -2,7 +2,6 @@
 # :copyright: Copyright (c) 2016 ftrack
 
 import pyblish.api
-import nuke
 import clique
 import os
 import glob
@@ -17,7 +16,7 @@ class ExtractWriteNodes(pyblish.api.InstancePlugin):
 
     def process(self, instance):
         '''Process *instance* and extract media.'''
-
+        import nuke
         write_node = nuke.toNode(instance.name)
         file_comp = str(write_node['file'].value())
         proxy_comp = str(write_node['proxy'].value())
