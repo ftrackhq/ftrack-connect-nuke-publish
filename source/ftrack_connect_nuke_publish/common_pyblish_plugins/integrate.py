@@ -75,7 +75,7 @@ class IntegratorCreateAsset(pyblish.api.ContextPlugin):
 
 
 class IntegratorCreateComponents(pyblish.api.InstancePlugin):
-    '''Extract maya cameras from scene.'''
+    '''Extract nuke cameras from scene.'''
 
     order = pyblish.api.IntegratorOrder + 0.1
 

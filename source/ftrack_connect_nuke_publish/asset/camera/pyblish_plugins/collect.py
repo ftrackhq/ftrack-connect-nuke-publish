@@ -10,7 +10,7 @@ class CollectCameras(pyblish.api.ContextPlugin):
     order = pyblish.api.CollectorOrder
 
     def process(self, context):
-        '''Process *context* and add maya camera instances.'''
+        '''Process *context* and add nuke camera instances.'''
         import nuke
 
         self.log.debug('Started collecting camera from scene.')

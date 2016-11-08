@@ -5,7 +5,7 @@ import nuke
 
 
 def get_plugin_information():
-    '''Return plugin information for maya.'''
+    '''Return plugin information for nuke.'''
     import ftrack_connect_nuke_publish
     return {
         'application_id': 'nuke',
