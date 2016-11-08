@@ -22,6 +22,9 @@ plugin_base_dir = os.path.normpath(
     )
 )
 
+application_hook = os.path.join(
+    plugin_base_dir, 'resource', 'application_hook'
+)
 
 nuke_plugin_path = os.path.join(
     plugin_base_dir, 'resource', 'nuke_plugin'
@@ -53,7 +56,11 @@ def on_application_launch(event):
         'PYTHONPATH',
         event['data']['options']['env']
     )
-
+    ftrack_connect.application.appendPath(
+        application_hook,
+        'FTRACK_EVENT_PLUGIN_PATH',
+        event['data']['options']['env']
+    )
     ftrack_connect.application.appendPath(
         nuke_plugin_path,
         'NUKE_PATH',
