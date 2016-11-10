@@ -7,6 +7,7 @@ import nuke
 def get_plugin_information():
     '''Return plugin information for nuke.'''
     import ftrack_connect_nuke_publish
+    import ftrack_connect_nuke_publish._version
     return {
         'application_id': 'nuke',
         'plugin_version': ftrack_connect_nuke_publish._version.__version__
@@ -25,6 +26,7 @@ def open_publish():
 
     import ftrack_connect_nuke_publish
     ftrack_connect_nuke_publish.register_assets(session)
+    ftrack_connect_nuke_publish.register_common_pyblish_plugins()
 
     import ftrack_connect_pipeline.ui.publish_actions_dialog
     ftrack_connect_pipeline.ui.publish_actions_dialog.show(session)
