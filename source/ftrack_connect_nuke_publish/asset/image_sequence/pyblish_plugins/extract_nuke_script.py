@@ -12,7 +12,7 @@ class ExtractNukeScriptComponent(pyblish.api.InstancePlugin):
     families = ['ftrack.nuke.script']
 
     def process(self, instance):
-
+        '''Process *instance*.'''
         self.log.debug(
             'Started extracting nuke script {0!r}'.format(
                 instance.name
@@ -20,16 +20,16 @@ class ExtractNukeScriptComponent(pyblish.api.InstancePlugin):
         )
 
         import nuke
-        nukescript_path = ''
+        nuke_script_path = ''
         if nuke.Root().name() == 'Root':
-            tmp_script = tempfile.NamedTemporaryFile(suffix='.nk')
-            nuke.scriptSaveAs(tmp_script.name)
-            nukescript_path = tmp_script.name
+            temporary_script = tempfile.NamedTemporaryFile(suffix='.nk')
+            nuke.scriptSaveAs(temporary_script.name)
+            nuke_script_path = temporary_script.name
         else:
-            nukescript_path = nuke.root()['name'].value()
+            nuke_script_path = nuke.root()['name'].value()
 
         new_component = {
-            'path': nukescript_path,
+            'path': nuke_script_path,
             'name': instance.name,
         }
 

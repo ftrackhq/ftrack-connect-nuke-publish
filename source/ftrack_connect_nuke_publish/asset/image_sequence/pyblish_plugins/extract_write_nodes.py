@@ -51,7 +51,7 @@ class ExtractWriteNodes(pyblish.api.InstancePlugin):
         except ValueError:
             print(
                 'Could not determine prefix, padding '
-                'and extension from "".'.format(frames)
+                'and extension from "{0}".'.format(frames)
             )
         else:
             root = os.path.dirname(prefix)

@@ -13,7 +13,7 @@ class PreCameraAlembicExtract(pyblish.api.InstancePlugin):
     families = ['ftrack.nuke.camera']
 
     def process(self, instance):
-
+        '''Process *instance*.'''
         self.log.debug(
             'Pre extracting nuke camera {0!r}'.format(
                 instance.name
@@ -27,15 +27,15 @@ class PreCameraAlembicExtract(pyblish.api.InstancePlugin):
         scn.setInput(0, camera_node)
         instance.data['nuke_scene'] = scn
 
-        wrt = nuke.nodes.WriteGeo()
-        wrt.setInput(0, scn)
-        wrt['file_type'].setValue('abc')
-        wrt['writeCameras'].setValue(True)
-        wrt['writeGeometries'].setValue(False)
-        wrt['writeAxes'].setValue(False)
-        wrt['writePointClouds'].setValue(False)
-        wrt['storageFormat'].setValue("Ogawa") # or HDF5?
-        instance.data['nuke_write'] = wrt
+        write = nuke.nodes.WriteGeo()
+        write.setInput(0, scn)
+        write['file_type'].setValue('abc')
+        write['writeCameras'].setValue(True)
+        write['writeGeometries'].setValue(False)
+        write['writeAxes'].setValue(False)
+        write['writePointClouds'].setValue(False)
+        write['storageFormat'].setValue('Ogawa')
+        instance.data['nuke_write'] = write
 
 
 class ExtractCameraAlembic(pyblish.api.InstancePlugin):
@@ -61,7 +61,7 @@ class ExtractCameraAlembic(pyblish.api.InstancePlugin):
 
         nuke.execute(write_node.name())
         new_component = {
-            'name': '%s.alembic' % instance.name,
+            'name': '{0}.alembic'.format(instance.name),
             'path': temporary_path,
         }
 
