@@ -39,6 +39,3 @@ class ExtractNukeScriptComponent(pyblish.api.InstancePlugin):
                 new_component, instance.name
             )
         )
-
-
-pyblish.api.register_plugin(ExtractNukeScriptComponent)

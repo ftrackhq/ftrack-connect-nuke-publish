@@ -49,7 +49,3 @@ class CollectNukeScript(pyblish.api.ContextPlugin):
                 instance
             )
         )
-
-
-pyblish.api.register_plugin(CollectNukeScript)
-pyblish.api.register_plugin(CollectWriteNodes)

@@ -90,8 +90,3 @@ class PostCameraAlembicExtract(pyblish.api.InstancePlugin):
         import nuke
         nuke.delete(instance.data['nuke_write'])
         nuke.delete(instance.data['nuke_scene'])
-
-
-pyblish.api.register_plugin(PreCameraAlembicExtract)
-pyblish.api.register_plugin(ExtractCameraAlembic)
-pyblish.api.register_plugin(PostCameraAlembicExtract)
