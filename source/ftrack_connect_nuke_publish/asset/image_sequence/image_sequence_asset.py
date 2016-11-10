@@ -1,6 +1,7 @@
 # :coding: utf-8
 # :copyright: Copyright (c) 2016 ftrack
 
+import nuke
 import ftrack_connect_pipeline.asset
 
 
@@ -22,3 +23,11 @@ class PublishImageSequence(ftrack_connect_pipeline.asset.PyblishAsset):
                 })
 
         return options
+
+    def get_scene_selection(self):
+        '''Return a list of names for scene selection.'''
+        selection = []
+        for node in nuke.selectedNodes():
+            selection.append(node.name())
+
+        return selection
