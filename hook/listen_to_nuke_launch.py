@@ -22,16 +22,16 @@ plugin_base_dir = os.path.normpath(
     )
 )
 
-publish_actions_path = os.path.join(
+application_hook = os.path.join(
     plugin_base_dir, 'resource', 'application_hook'
-)
-
-pyblish_plugin_path = os.path.join(
-    plugin_base_dir, 'resource', 'pyblish_plugins'
 )
 
 nuke_plugin_path = os.path.join(
     plugin_base_dir, 'resource', 'nuke_plugin'
+)
+
+ftrack_connect_nuke_publish_path = os.path.join(
+    plugin_base_dir, 'source'
 )
 
 python_dependencies = os.path.join(
@@ -47,23 +47,18 @@ def on_application_launch(event):
         return
 
     ftrack_connect.application.appendPath(
-        publish_actions_path,
+        python_dependencies,
+        'PYTHONPATH',
+        event['data']['options']['env']
+    )
+    ftrack_connect.application.appendPath(
+        ftrack_connect_nuke_publish_path,
+        'PYTHONPATH',
+        event['data']['options']['env']
+    )
+    ftrack_connect.application.appendPath(
+        application_hook,
         'FTRACK_EVENT_PLUGIN_PATH',
-        event['data']['options']['env']
-    )
-    ftrack_connect.application.appendPath(
-        python_dependencies,
-        'PYTHONPATH',
-        event['data']['options']['env']
-    )
-    ftrack_connect.application.appendPath(
-        python_dependencies,
-        'PYTHONPATH',
-        event['data']['options']['env']
-    )
-    ftrack_connect.application.appendPath(
-        pyblish_plugin_path,
-        'PYBLISHPLUGINPATH',
         event['data']['options']['env']
     )
     ftrack_connect.application.appendPath(

@@ -1,7 +1,6 @@
 # :coding: utf-8
 # :copyright: Copyright (c) 2016 ftrack
 
-import ftrack_api
 import ftrack_connect_pipeline.asset
 
 
@@ -23,21 +22,3 @@ class PublishImageSequence(ftrack_connect_pipeline.asset.PyblishAsset):
                 })
 
         return options
-
-
-def register(session):
-    '''Subscribe to *session*.'''
-    if not isinstance(session, ftrack_api.Session):
-        return
-
-    image_sequence_asset = ftrack_connect_pipeline.asset.Asset(
-        identifier='image_sequence',
-        publish_asset=PublishImageSequence(
-            label='Media',
-            description='publish media to ftrack.',
-            icon='http://www.clipartbest.com/cliparts/9Tp/erx/9Tperxqrc.png'
-        )
-    )
-    # Register media asset on session. This makes sure that discover is called
-    # for import and publish.
-    image_sequence_asset.register(session)
