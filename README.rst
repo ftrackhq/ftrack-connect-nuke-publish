@@ -12,22 +12,15 @@ Documentation
 Installation guide
 ==================
 
-#.  git clone git@bitbucket.org:ftrack/ftrack-connect-nuke-publish.git to
-    <connect-plugin-directory>.
-#.  cd to <connect-plugin-directory>/ftrack-connect-nuke-publish/
-#.  Install all dependencies to a ftrack-connect-nuke-publish into a directory
-    with::
-
-        pip install --target=dependencies --verbose  --upgrade --process-dependency-links .
+Follow the installation instructions here:
+http://ftrack-connect-documentation.rtd.ftrack.com/en/stable/nuke/installation.html
 
 Usage
 =====
 
 #.  Start ftrack Connect (close and start if already running).
 #.  Start Nuke on a task.
-#.  Create a write node and render material.
-#.  Open menu `ftrack new` and choose Media.
-#.  Fill out form and try to publish.
+#.  Open menu `ftrack new` and choose one of the publish actions.
 
 *********************
 Copyright and license
