@@ -67,6 +67,8 @@ class ExtractCameraAlembic(pyblish.api.InstancePlugin):
             'component_name', instance.name
         )
 
+        self.log.debug('using component name: {0!r}'.format(component_name))
+
         new_component = {
             'name': '{0}.alembic'.format(component_name),
             'path': temporary_path,
