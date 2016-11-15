@@ -30,10 +30,6 @@ class ExtractWriteNodes(pyblish.api.InstancePlugin):
         proxy_comp = str(write_node['proxy'].value())
         node_name = str(write_node['name'].value()).strip()
 
-        still_image = False
-        if len(file_comp.split('.')) <= 2:
-            still_image = True
-
         component_name = instance.data.get(
             'options', {}
         ).get(
@@ -42,7 +38,9 @@ class ExtractWriteNodes(pyblish.api.InstancePlugin):
 
         self.log.debug('Using component name: {0!r}'.format(component_name))
 
-        if still_image:
+        single_file = os.path.isfile(file_comp)
+        if single_file:
+            # File exists.
             new_component = {
                 'path': file_comp,
                 'name': component_name,
@@ -59,16 +57,18 @@ class ExtractWriteNodes(pyblish.api.InstancePlugin):
                 instance.data['ftrack_components'].append(new_component)
 
         else:
-            # use the timeline to define the amount of frames
+            # File does not exist, assume that it is a file sequence.
+
+            # Use the timeline to define the amount of frames.
             first = str(int(nuke.root().knob('first_frame').value()))
             last = str(int(nuke.root().knob('last_frame').value()))
 
-            # then in case check if the limit are set
+            # Then in case check if the limit are set.
             if write_node['use_limit'].value():
                 first = str(write_node['first'].value())
                 last = str(write_node['last'].value())
 
-            # always check how many frames are actually available
+            # Always check how many frames are actually available.
             frames = write_node['file'].value()
 
             try:
