@@ -31,6 +31,12 @@ class ExtractWriteNodes(pyblish.api.InstancePlugin):
         node_name = str(write_node['name'].value()).strip()
         file_type = str(write_node['file_type'].value())
 
+        try:
+            still_image = False
+            _, _, _ = file_comp.split('.')
+        except ValueError:
+            still_image = True
+
         component_name = instance.data.get(
             'options', {}
         ).get(
@@ -39,7 +45,7 @@ class ExtractWriteNodes(pyblish.api.InstancePlugin):
 
         self.log.debug('using component name: {0!r}'.format(component_name))
 
-        if file_type == 'mov':
+        if still_image or file_type == 'mov':
             new_component = {
                 'path': file_comp,
                 'name': component_name,
