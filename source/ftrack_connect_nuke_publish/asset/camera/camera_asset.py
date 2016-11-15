@@ -34,6 +34,17 @@ class PublishCamera(ftrack_connect_pipeline.asset.PyblishAsset):
 
         return options
 
+    def get_item_options(self, publish_data, name):
+        '''Return options for publishable item with *name*.'''
+        options = [
+            {
+                'type': 'text',
+                'name': 'component_name',
+                'label': 'Component Name'
+            }
+        ]
+        return options
+
     def get_scene_selection(self):
         '''Return a list of names for scene selection.'''
         selection = []

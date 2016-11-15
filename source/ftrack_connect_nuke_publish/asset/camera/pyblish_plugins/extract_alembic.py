@@ -60,8 +60,15 @@ class ExtractCameraAlembic(pyblish.api.InstancePlugin):
         write_node['file'].setValue(temporary_path)
 
         nuke.execute(write_node.name())
+
+        component_name = instance.data.get(
+            'options', {}
+        ).get(
+            'component_name', instance.name
+        )
+
         new_component = {
-            'name': '{0}.alembic'.format(instance.name),
+            'name': '{0}.alembic'.format(component_name),
             'path': temporary_path,
         }
 

@@ -24,10 +24,19 @@ class ExtractWriteNodes(pyblish.api.InstancePlugin):
         )
 
         import nuke
+
         write_node = nuke.toNode(instance.name)
         file_comp = str(write_node['file'].value())
         proxy_comp = str(write_node['proxy'].value())
-        name_comp = str(write_node['name'].value()).strip()
+        node_name = str(write_node['name'].value()).strip()
+
+        component_name = instance.data.get(
+            'options', {}
+        ).get(
+            'component_name', node_name
+        )
+
+        self.log.debug('using component name: {0!r}'.format(component_name))
 
         # use the timeline to define the amount of frames
         first = str(int(nuke.root().knob('first_frame').value()))
@@ -74,10 +83,10 @@ class ExtractWriteNodes(pyblish.api.InstancePlugin):
 
         new_component = {
             'path': sequence_path,
-            'name': name_comp,
+            'name': component_name,
             'first': first,
             'last': last,
-            'node_name': name_comp
+            'node_name': node_name
         }
 
         instance.data['ftrack_components'].append(new_component)
@@ -98,10 +107,10 @@ class ExtractWriteNodes(pyblish.api.InstancePlugin):
 
             new_component = {
                 'file_path': new_component,
-                'name': name_comp + '_proxy',
+                'name': component_name + '_proxy',
                 'first': first,
                 'last': last,
-                'node_name': name_comp
+                'node_name': node_name
             }
 
             instance.data['ftrack_components'].append(new_component)
