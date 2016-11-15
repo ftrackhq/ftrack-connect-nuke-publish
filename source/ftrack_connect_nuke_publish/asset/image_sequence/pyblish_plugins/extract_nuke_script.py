@@ -36,7 +36,7 @@ class ExtractNukeScriptComponent(pyblish.api.InstancePlugin):
             'component_name', instance.name
         )
 
-        self.log.debug('using component name: {0!r}'.format(component_name))
+        self.log.debug('Using component name: {0!r}'.format(component_name))
         new_component = {
             'path': nuke_script_path,
             'name': component_name
