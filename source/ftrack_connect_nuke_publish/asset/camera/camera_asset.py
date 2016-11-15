@@ -10,7 +10,20 @@ class PublishCamera(ftrack_connect_pipeline.asset.PyblishAsset):
 
     def get_options(self, publish_data):
         '''Return global options.'''
-        options = []
+        from ftrack_connect_pipeline.ui.widget.field.start_end_frame import StartEndFrameField
+        first = int(nuke.root().knob('first_frame').value())
+        last = int(nuke.root().knob('last_frame').value())
+
+        frame_range = StartEndFrameField(first, last)
+
+        options = [
+            {
+                'type': 'qt_widget',
+                'name': 'frame_range',
+                'widget': frame_range
+            }
+
+        ]
 
         default_options = super(
             PublishCamera, self
