@@ -13,6 +13,16 @@ class ExtractNukeScriptComponent(pyblish.api.InstancePlugin):
 
     def process(self, instance):
         '''Process *instance*.'''
+        context = instance.context
+
+        if not context.data['options'].get('attach_scene'):
+            self.log.debug(
+                'Nuke script will not be extracted: {0!r}'.format(
+                    instance.name
+                )
+            )
+            return
+
         self.log.debug(
             'Started extracting nuke script {0!r}'.format(
                 instance.name
@@ -30,12 +40,7 @@ class ExtractNukeScriptComponent(pyblish.api.InstancePlugin):
         else:
             nuke_script_path = nuke.root()['name'].value()
 
-        component_name = instance.data.get(
-            'options', {}
-        ).get(
-            'component_name', instance.name
-        )
-
+        component_name = 'scene'
         self.log.debug('Using component name: {0!r}'.format(component_name))
         new_component = {
             'path': nuke_script_path,
@@ -48,3 +53,5 @@ class ExtractNukeScriptComponent(pyblish.api.InstancePlugin):
                 new_component, instance.name
             )
         )
+
+pyblish.api.register_plugin(ExtractNukeScriptComponent)
