@@ -13,9 +13,7 @@ class PublishImageSequence(ftrack_connect_pipeline.asset.PyblishAsset):
         '''Return list of items that can be published.'''
         options = []
         for instance in publish_data:
-            if instance.data['family'] in (
-                'ftrack.nuke.write',
-            ):
+            if instance.data['family'] in ('ftrack.nuke.write',):
                 options.append({
                     'label': instance.name,
                     'name': instance.name,
@@ -29,7 +27,7 @@ class PublishImageSequence(ftrack_connect_pipeline.asset.PyblishAsset):
         instance = ftrack_connect_pipeline.pyblish.get_instance(
             name, publish_data
         )
-        if instance.data['family'] == 'ftrack.nuke.write':
+        if instance.data['family'] in ('ftrack.nuke.write',):
             return [
                 {
                     'type': 'text',
@@ -46,21 +44,3 @@ class PublishImageSequence(ftrack_connect_pipeline.asset.PyblishAsset):
             selection.append(node.name())
 
         return selection
-
-    def get_options(self, publish_data):
-        '''Return global options.'''
-        options = [
-            {
-                'type': 'boolean',
-                'name': 'attach_scene',
-                'label': 'Attach scene for reference',
-                'value': True
-            }
-        ]
-
-        default_options = super(PublishImageSequence, self).get_options(
-            publish_data
-        )
-
-        options += default_options
-        return options

@@ -13,16 +13,6 @@ class ExtractNukeScriptComponent(pyblish.api.InstancePlugin):
 
     def process(self, instance):
         '''Process *instance*.'''
-        context = instance.context
-
-        if not context.data['options'].get('attach_scene'):
-            self.log.debug(
-                'Nuke script will not be extracted: {0!r}'.format(
-                    instance.name
-                )
-            )
-            return
-
         self.log.debug(
             'Started extracting nuke script {0!r}'.format(
                 instance.name
