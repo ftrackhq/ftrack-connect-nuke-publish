@@ -3,7 +3,6 @@
 
 import nuke
 import ftrack_connect_pipeline.asset
-import ftrack_connect_pipeline.pyblish
 
 
 class PublishImageSequence(ftrack_connect_pipeline.asset.PyblishAsset):
