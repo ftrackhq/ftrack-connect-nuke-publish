@@ -21,9 +21,6 @@ class CollectWriteNodes(pyblish.api.ContextPlugin):
                 )
                 instance.data['publish'] = True
                 instance.data['ftrack_components'] = []
-                instance.data['component_name'] = (
-                    node.knobs()['fcompname'].value()
-                )
 
                 self.log.debug(
                     'Collected Write node instance {0!r} {1!r}.'.format(

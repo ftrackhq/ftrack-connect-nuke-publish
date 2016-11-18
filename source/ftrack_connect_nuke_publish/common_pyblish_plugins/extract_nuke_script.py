@@ -30,11 +30,9 @@ class ExtractNukeScriptComponent(pyblish.api.InstancePlugin):
         else:
             nuke_script_path = nuke.root()['name'].value()
 
-        component_name = 'scene'
-        self.log.debug('Using component name: {0!r}'.format(component_name))
         new_component = {
             'path': nuke_script_path,
-            'name': component_name
+            'name': 'scene'
         }
 
         instance.data['ftrack_components'].append(new_component)

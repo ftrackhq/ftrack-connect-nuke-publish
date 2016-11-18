@@ -30,7 +30,7 @@ class ExtractWriteNodes(pyblish.api.InstancePlugin):
         proxy_comp = str(write_node['proxy'].value())
         node_name = str(write_node['name'].value()).strip()
 
-        component_name = instance.data['component_name']
+        component_name = instance.name
 
         self.log.debug('Using component name: {0!r}'.format(component_name))
 

@@ -72,16 +72,8 @@ class ExtractCameraAlembic(pyblish.api.InstancePlugin):
 
         nuke.execute(write_node.name())
 
-        component_name = instance.data.get(
-            'options', {}
-        ).get(
-            'component_name', instance.name
-        )
-
-        self.log.debug('Using component name: {0!r}'.format(component_name))
-
         new_component = {
-            'name': '{0}.alembic'.format(component_name),
+            'name': '{0}.alembic'.format(instance.name),
             'path': temporary_path,
         }
 
