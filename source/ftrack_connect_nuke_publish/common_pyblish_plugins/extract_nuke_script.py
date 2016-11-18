@@ -22,15 +22,17 @@ class ExtractNukeScriptComponent(pyblish.api.InstancePlugin):
         import nuke
         nuke_script_path = ''
         if nuke.Root().name() == 'Root':
-            temporary_script = tempfile.NamedTemporaryFile(suffix='.nk')
-            nuke.scriptSaveAs(temporary_script.name)
-            nuke_script_path = temporary_script.name
+            temporary_script_name = tempfile.NamedTemporaryFile(
+                suffix='.nk', delete=True
+            ).name
+            nuke.scriptSaveAs(temporary_script_name)
+            nuke_script_path = temporary_script_name
         else:
             nuke_script_path = nuke.root()['name'].value()
 
         new_component = {
             'path': nuke_script_path,
-            'name': instance.name,
+            'name': 'scene'
         }
 
         instance.data['ftrack_components'].append(new_component)
@@ -39,3 +41,5 @@ class ExtractNukeScriptComponent(pyblish.api.InstancePlugin):
                 new_component, instance.name
             )
         )
+
+pyblish.api.register_plugin(ExtractNukeScriptComponent)

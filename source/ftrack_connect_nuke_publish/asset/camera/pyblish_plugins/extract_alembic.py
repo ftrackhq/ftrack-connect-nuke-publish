@@ -23,6 +23,13 @@ class PreCameraAlembicExtract(pyblish.api.InstancePlugin):
         import nuke
         camera_node = nuke.toNode(instance.name)
 
+        frame_range = instance.context.data['options'].get(
+            'frame_range', {}
+        )
+
+        first = frame_range['start_frame']
+        last = frame_range['end_frame']
+
         scn = nuke.nodes.Scene()
         scn.setInput(0, camera_node)
         instance.data['nuke_scene'] = scn
@@ -35,6 +42,10 @@ class PreCameraAlembicExtract(pyblish.api.InstancePlugin):
         write['writeAxes'].setValue(False)
         write['writePointClouds'].setValue(False)
         write['storageFormat'].setValue('Ogawa')
+        write['use_limit'].setValue(True)
+        write['first'].setValue(float(first))
+        write['last'].setValue(float(last))
+
         instance.data['nuke_write'] = write
 
 
@@ -60,6 +71,7 @@ class ExtractCameraAlembic(pyblish.api.InstancePlugin):
         write_node['file'].setValue(temporary_path)
 
         nuke.execute(write_node.name())
+
         new_component = {
             'name': '{0}.alembic'.format(instance.name),
             'path': temporary_path,

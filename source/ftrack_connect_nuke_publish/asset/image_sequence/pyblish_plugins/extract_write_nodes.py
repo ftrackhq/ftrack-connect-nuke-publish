@@ -24,87 +24,113 @@ class ExtractWriteNodes(pyblish.api.InstancePlugin):
         )
 
         import nuke
+
         write_node = nuke.toNode(instance.name)
         file_comp = str(write_node['file'].value())
         proxy_comp = str(write_node['proxy'].value())
-        name_comp = str(write_node['name'].value()).strip()
+        node_name = str(write_node['name'].value()).strip()
 
-        # use the timeline to define the amount of frames
-        first = str(int(nuke.root().knob('first_frame').value()))
-        last = str(int(nuke.root().knob('last_frame').value()))
+        component_name = instance.name
 
-        # then in case check if the limit are set
-        if write_node['use_limit'].value():
-            first = str(write_node['first'].value())
-            last = str(write_node['last'].value())
+        self.log.debug('Using component name: {0!r}'.format(component_name))
 
-        # always check how many frames are actually available
-        frames = write_node['file'].value()
+        single_file = os.path.isfile(file_comp)
+        if single_file:
+            # File exists.
+            new_component = {
+                'path': file_comp,
+                'name': component_name,
+                'node_name': node_name
+            }
+            instance.data['ftrack_components'].append(new_component)
 
-        try:
-            # Try to collect the sequence prefix, padding
-            # and extension. If this fails with a ValueError
-            # we are probably handling a non-sequence file.
-            # If so rely on the first_frame and last_frame
-            # of the root node.
-            prefix, padding, extension = frames.split('.')
-        except ValueError:
-            print(
-                'Could not determine prefix, padding '
-                'and extension from "{0}".'.format(frames)
-            )
+            if proxy_comp != '':
+                new_component = {
+                    'path': new_component,
+                    'name': component_name + '_proxy',
+                    'node_name': node_name
+                }
+                instance.data['ftrack_components'].append(new_component)
+
         else:
-            root = os.path.dirname(prefix)
-            files = glob.glob('{0}/*.{1}'.format(root, extension))
-            collections = clique.assemble(files)
+            # File does not exist, assume that it is a file sequence.
 
-            for collection in collections[0]:
-                if prefix in collection.head:
-                    indexes = list(collection.indexes)
-                    first = str(indexes[0])
-                    last = str(indexes[-1])
-                    break
+            # Use the timeline to define the amount of frames.
+            first = str(int(nuke.root().knob('first_frame').value()))
+            last = str(int(nuke.root().knob('last_frame').value()))
 
-        if first != last:
-            sequence_path = u'{0} [{1}-{2}]'.format(
-                file_comp, first, last
-            )
-        else:
-            sequence_path = unicode(file_comp % first)
+            # Then in case check if the limit are set.
+            if write_node['use_limit'].value():
+                first = str(write_node['first'].value())
+                last = str(write_node['last'].value())
 
-        new_component = {
-            'path': sequence_path,
-            'name': name_comp,
-            'first': first,
-            'last': last,
-            'node_name': name_comp
-        }
+            # Always check how many frames are actually available.
+            frames = write_node['file'].value()
 
-        instance.data['ftrack_components'].append(new_component)
-        self.log.debug(
-            'Extracted {0!r} from {1!r}'.format(
-                new_component, instance.name
-            )
-        )
+            try:
+                # Try to collect the sequence prefix, padding
+                # and extension. If this fails with a ValueError
+                # we are probably handling a non-sequence file.
+                # If so rely on the first_frame and last_frame
+                # of the root node.
+                prefix, padding, extension = frames.split('.')
+            except ValueError:
+                print(
+                    'Could not determine prefix, padding '
+                    'and extension from "{0}".'.format(frames)
+                )
+            else:
+                root = os.path.dirname(prefix)
+                files = glob.glob('{0}/*.{1}'.format(root, extension))
+                collections = clique.assemble(files)
 
-        if proxy_comp != '':
+                for collection in collections[0]:
+                    if prefix in collection.head:
+                        indexes = list(collection.indexes)
+                        first = str(indexes[0])
+                        last = str(indexes[-1])
+                        break
 
             if first != last:
                 sequence_path = u'{0} [{1}-{2}]'.format(
-                    proxy_comp, first, last
+                    file_comp, first, last
                 )
             else:
-                sequence_path = unicode(proxy_comp % first)
+                sequence_path = unicode(file_comp % first)
 
             new_component = {
-                'file_path': new_component,
-                'name': name_comp + '_proxy',
+                'path': sequence_path,
+                'name': component_name,
                 'first': first,
                 'last': last,
-                'node_name': name_comp
+                'node_name': node_name
             }
 
             instance.data['ftrack_components'].append(new_component)
+            self.log.debug(
+                'Extracted {0!r} from {1!r}'.format(
+                    new_component, instance.name
+                )
+            )
+
+            if proxy_comp != '':
+
+                if first != last:
+                    sequence_path = u'{0} [{1}-{2}]'.format(
+                        proxy_comp, first, last
+                    )
+                else:
+                    sequence_path = unicode(proxy_comp % first)
+
+                new_component = {
+                    'path': new_component,
+                    'name': component_name + '_proxy',
+                    'first': first,
+                    'last': last,
+                    'node_name': node_name
+                }
+
+                instance.data['ftrack_components'].append(new_component)
 
             self.log.debug(
                 'Extracted {0!r} from {1!r}'.format(
