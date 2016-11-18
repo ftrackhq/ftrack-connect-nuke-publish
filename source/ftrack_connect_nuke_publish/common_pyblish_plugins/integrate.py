@@ -86,7 +86,16 @@ class IntegratorCreateComponents(pyblish.api.InstancePlugin):
         context = instance.context
         asset_version = context.data['asset_version']
         session = asset_version.session
-        location = session.pick_location()
+
+        if 'location_name' in instance.data['options']:
+            location = session.query(
+                'Location where name is "{0}"'.format(
+                    instance.data['options']['location_name']
+                )
+            ).one()
+        else:
+            location = session.pick_location()
+
         self.log.debug('Picked location {0!r}.'.format(location['name']))
 
         for component_item in instance.data.get('ftrack_components', []):
