@@ -20,9 +20,9 @@ def register_assets(session):
     )
 
 
-def register_common_pyblish_plugins():
-    '''Register common pyblish plugins.'''
-    # Register common pyblish plugins.
+def register_shared_pyblish_plugins():
+    '''Register shared pyblish plugins.'''
+    # Register shared pyblish plugins.
     path = os.path.normpath(
         os.path.join(
             os.path.abspath(
@@ -30,7 +30,7 @@ def register_common_pyblish_plugins():
                     __file__
                 )
             ),
-            'common_pyblish_plugins'
+            'shared_pyblish_plugins'
         )
     )
     pyblish.plugin.register_plugin_path(path)
