@@ -9,15 +9,20 @@ import ftrack_connect_pipeline.asset
 from ftrack_connect_nuke_publish.asset.image_sequence import image_sequence_asset
 
 
+def create_asset_publish():
+    '''Return asset publisher.'''
+    return image_sequence_asset.PublishImageSequence(
+        description='publish media to ftrack.'
+    )
+
+
 def register_asset_plugin(session, event):
     '''Register asset plugin.'''
     image_sequence = ftrack_connect_pipeline.asset.Asset(
         identifier='image_sequence',
-        publish_asset=image_sequence_asset.PublishImageSequence(
-            label='Media',
-            description='publish media to ftrack.',
-            icon='http://www.clipartbest.com/cliparts/9Tp/erx/9Tperxqrc.png'
-        )
+        label='Media',
+        icon='http://www.clipartbest.com/cliparts/9Tp/erx/9Tperxqrc.png',
+        create_asset_publish=create_asset_publish
     )
     # Register media asset on session. This makes sure that discover is called
     # for import and publish.

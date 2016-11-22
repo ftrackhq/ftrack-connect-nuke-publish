@@ -9,7 +9,9 @@ class ExtractNukeScriptComponent(pyblish.api.InstancePlugin):
     '''Create ftrack nukescript component if the used enabled it.'''
 
     order = pyblish.api.ExtractorOrder
-    families = ['ftrack.nuke.script']
+
+    families = ['ftrack', 'script']
+    match = pyblish.api.Subset
 
     def process(self, instance):
         '''Process *instance*.'''

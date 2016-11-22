@@ -3,6 +3,17 @@
 
 import nuke
 
+registered_plugins = False
+
+
+def register_pyblish_plugins():
+    '''Register pyblish plugins.'''
+    import ftrack_connect_nuke_publish.shared_pyblish_plugins
+    import ftrack_connect_pipeline.shared_pyblish_plugins
+
+    ftrack_connect_nuke_publish.shared_pyblish_plugins.register()
+    ftrack_connect_pipeline.shared_pyblish_plugins.register()
+
 
 def get_plugin_information():
     '''Return plugin information for nuke.'''
@@ -16,6 +27,7 @@ def get_plugin_information():
 
 def open_publish():
     '''Open publish dialog.'''
+    import ftrack_connect_nuke_publish
     import ftrack_api
 
     session = ftrack_api.Session()
@@ -24,9 +36,12 @@ def open_publish():
         lambda event: get_plugin_information()
     )
 
-    import ftrack_connect_nuke_publish
     ftrack_connect_nuke_publish.register_assets(session)
-    ftrack_connect_nuke_publish.register_common_pyblish_plugins()
+
+    global registered_plugins
+    if registered_plugins is False:
+        register_pyblish_plugins()
+        registered_plugins = True
 
     import ftrack_connect_pipeline.ui.publish_actions_dialog
     ftrack_connect_pipeline.ui.publish_actions_dialog.show(session)

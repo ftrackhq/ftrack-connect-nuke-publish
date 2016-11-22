@@ -12,7 +12,7 @@ class PublishImageSequence(ftrack_connect_pipeline.asset.PyblishAsset):
 
     enable_in_place_location_publish = True
 
-    def get_options(self, publish_data):
+    def get_options(self):
         '''Return global options.'''
         options = []
 
@@ -26,16 +26,18 @@ class PublishImageSequence(ftrack_connect_pipeline.asset.PyblishAsset):
 
         default_options = super(
             PublishImageSequence, self
-        ).get_options(publish_data)
+        ).get_options()
 
         options += default_options
         return options
 
-    def get_publish_items(self, publish_data):
+    def get_publish_items(self):
         '''Return list of items that can be published.'''
+        match = set(['write', 'ftrack'])
+
         options = []
-        for instance in publish_data:
-            if instance.data['family'] in ('ftrack.nuke.write',):
+        for instance in self.pyblish_context:
+            if match.issubset(instance.data['families']):
                 options.append({
                     'label': instance.name,
                     'name': instance.name,
@@ -45,11 +47,11 @@ class PublishImageSequence(ftrack_connect_pipeline.asset.PyblishAsset):
         return options
 
     def update_with_options(
-        self, publish_data, item_options, general_options, selected_items
+        self, item_options, general_options, selected_items
     ):
-        '''Update *publish_data* with *item_options* and *general_options*.'''
+        '''Update *item_options* and *general_options*.'''
         super(PublishImageSequence, self).update_with_options(
-            publish_data, item_options, general_options, selected_items
+            item_options, general_options, selected_items
         )
         self.logger.debug(
             'Updating nuke write nodes with "publish_files_in_place" option: '
@@ -57,7 +59,7 @@ class PublishImageSequence(ftrack_connect_pipeline.asset.PyblishAsset):
         )
 
         if general_options['publish_files_in_place']:
-            for instance in publish_data:
+            for instance in self.pyblish_context:
                 if instance.data['family'] in ('ftrack.nuke.write',):
                     instance.data['options']['location_name'] = (
                         self.in_place_location_name
