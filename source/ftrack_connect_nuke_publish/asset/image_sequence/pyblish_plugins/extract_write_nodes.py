@@ -12,7 +12,8 @@ class ExtractWriteNodes(pyblish.api.InstancePlugin):
 
     order = pyblish.api.ExtractorOrder
 
-    families = ['ftrack.nuke.write']
+    families = ['ftrack', 'write']
+    match = pyblish.api.Subset
 
     def process(self, instance):
         '''Process *instance* and extract media.'''

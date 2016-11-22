@@ -33,9 +33,11 @@ class PublishImageSequence(ftrack_connect_pipeline.asset.PyblishAsset):
 
     def get_publish_items(self):
         '''Return list of items that can be published.'''
+        match = set(['write', 'ftrack'])
+
         options = []
         for instance in self.pyblish_context:
-            if instance.data['family'] in ('ftrack.nuke.write',):
+            if match.issubset(instance.data['families']):
                 options.append({
                     'label': instance.name,
                     'name': instance.name,

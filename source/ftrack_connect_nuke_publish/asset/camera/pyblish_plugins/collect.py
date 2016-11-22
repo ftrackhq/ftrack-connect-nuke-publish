@@ -18,7 +18,7 @@ class CollectCameras(pyblish.api.ContextPlugin):
         for node in nuke.allNodes():
             if node.Class() == 'Camera' or node.Class() == 'Camera2':
                 instance = context.create_instance(
-                    node.name(), family='ftrack.nuke.camera'
+                    node.name(), families=['ftrack', 'camera']
                 )
 
                 instance.data['publish'] = True

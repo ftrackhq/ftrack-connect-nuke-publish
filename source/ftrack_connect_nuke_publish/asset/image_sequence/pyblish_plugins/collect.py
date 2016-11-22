@@ -17,7 +17,7 @@ class CollectWriteNodes(pyblish.api.ContextPlugin):
         for node in nuke.allNodes():
             if node.Class() == 'Write':
                 instance = context.create_instance(
-                    node.name(), family='ftrack.nuke.write'
+                    node.name(), families=['ftrack', 'write']
                 )
                 instance.data['publish'] = True
                 instance.data['ftrack_components'] = []

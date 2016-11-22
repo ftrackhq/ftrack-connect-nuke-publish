@@ -10,7 +10,8 @@ class PreCameraAlembicExtract(pyblish.api.InstancePlugin):
 
     order = pyblish.api.ExtractorOrder - 0.1
 
-    families = ['ftrack.nuke.camera']
+    families = ['ftrack', 'camera']
+    match = pyblish.api.Subset
 
     def process(self, instance):
         '''Process *instance*.'''
@@ -54,7 +55,8 @@ class ExtractCameraAlembic(pyblish.api.InstancePlugin):
 
     order = pyblish.api.ExtractorOrder
 
-    families = ['ftrack.nuke.camera']
+    families = ['ftrack', 'camera']
+    match = pyblish.api.Subset
 
     def process(self, instance):
         '''Process *instance*.'''
@@ -88,7 +90,8 @@ class PostCameraAlembicExtract(pyblish.api.InstancePlugin):
 
     order = pyblish.api.ExtractorOrder + 0.1
 
-    families = ['ftrack.nuke.camera']
+    families = ['ftrack', 'camera']
+    match = pyblish.api.Subset
 
     def process(self, instance):
         '''Process *instance*.'''
