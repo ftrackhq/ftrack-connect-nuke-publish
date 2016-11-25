@@ -14,13 +14,13 @@ class CollectNukeScript(pyblish.api.ContextPlugin):
         self.log.debug('Started collecting scene script.')
 
         instance = context.create_instance(
-            'Script', families=['ftrack', 'script']
+            'Scene', families=['ftrack', 'scene']
         )
         instance.data['publish'] = True
         instance.data['ftrack_components'] = []
 
         self.log.debug(
-            'Collected Script instance {0!r}.'.format(
+            'Collected scene instance {0!r}.'.format(
                 instance
             )
         )
