@@ -10,13 +10,13 @@ class ExtractNukeScriptComponent(pyblish.api.InstancePlugin):
 
     order = pyblish.api.ExtractorOrder
 
-    families = ['ftrack', 'script']
+    families = ['ftrack', 'scene']
     match = pyblish.api.Subset
 
     def process(self, instance):
         '''Process *instance*.'''
         self.log.debug(
-            'Started extracting nuke script {0!r}'.format(
+            'Started extracting nuke scene {0!r}'.format(
                 instance.name
             )
         )
