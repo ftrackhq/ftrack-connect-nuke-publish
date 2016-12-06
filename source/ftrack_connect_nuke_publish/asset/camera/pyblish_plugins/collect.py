@@ -15,13 +15,15 @@ class CollectCameras(pyblish.api.ContextPlugin):
 
         self.log.debug('Started collecting camera from scene.')
 
+        selection = nuke.selectedNodes()
+
         for node in nuke.allNodes():
             if node.Class() == 'Camera' or node.Class() == 'Camera2':
                 instance = context.create_instance(
                     node.name(), families=['ftrack', 'camera']
                 )
 
-                instance.data['publish'] = True
+                instance.data['publish'] = node in selection
                 instance.data['ftrack_components'] = []
 
                 self.log.debug(
