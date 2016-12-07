@@ -8,18 +8,21 @@ import ftrack_connect_pipeline.asset
 
 from ftrack_connect_nuke_publish.asset.image_sequence import image_sequence_asset
 
+FTRACK_ASSET_TYPE = 'img'
+
 
 def create_asset_publish():
     '''Return asset publisher.'''
     return image_sequence_asset.PublishImageSequence(
-        description='publish media to ftrack.'
+        description='publish media to ftrack.',
+        asset_type_short=FTRACK_ASSET_TYPE
     )
 
 
 def register_asset_plugin(session, event):
     '''Register asset plugin.'''
     image_sequence = ftrack_connect_pipeline.asset.Asset(
-        identifier='image_sequence',
+        identifier=FTRACK_ASSET_TYPE,
         label='Media',
         icon='http://www.clipartbest.com/cliparts/9Tp/erx/9Tperxqrc.png',
         create_asset_publish=create_asset_publish
