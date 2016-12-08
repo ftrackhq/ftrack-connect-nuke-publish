@@ -43,8 +43,8 @@ def open_publish():
         register_pyblish_plugins()
         registered_plugins = True
 
-    import ftrack_connect_pipeline.ui.publish_actions_dialog
-    ftrack_connect_pipeline.ui.publish_actions_dialog.show(session)
+    import ftrack_connect_pipeline.ui.publish
+    ftrack_connect_pipeline.ui.publish.open(session)
 
 
 nukeMenu = nuke.menu('Nuke')

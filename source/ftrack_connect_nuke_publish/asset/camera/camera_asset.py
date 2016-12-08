@@ -28,12 +28,9 @@ class PublishCamera(ftrack_connect_pipeline.asset.PyblishAsset):
             }
         ]
 
-        default_options = super(
-            PublishCamera, self
-        ).get_options()
+        default_options = super(PublishCamera, self).get_options()
 
-        options += default_options
-        return options
+        return default_options + options
 
     def get_publish_items(self):
         '''Return list of items that can be published.'''
@@ -46,7 +43,7 @@ class PublishCamera(ftrack_connect_pipeline.asset.PyblishAsset):
                     {
                         'label': instance.name,
                         'name': instance.name,
-                        'value': True
+                        'value': instance.data.get('publish', False)
                     }
                 )
 
