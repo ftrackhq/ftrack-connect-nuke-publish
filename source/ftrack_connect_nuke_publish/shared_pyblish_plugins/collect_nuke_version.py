@@ -6,7 +6,7 @@ import nuke
 
 
 class CollectNukeVersion(pyblish.api.ContextPlugin):
-    '''Collect Nuke version.'''
+    '''Collect nuke version.'''
 
     order = pyblish.api.CollectorOrder
 
@@ -14,11 +14,11 @@ class CollectNukeVersion(pyblish.api.ContextPlugin):
         '''Process *context* and add Nuke version information.'''
 
         context.data['software'] = {
-            'name' : 'Nuke',
-            'version' : nuke.NUKE_VERSION_STRING
+            'name': 'Nuke',
+            'version': nuke.NUKE_VERSION_STRING
         }
 
-        self.log.debug('Collected Nuke version information.')
+        self.log.debug('Collected nuke version information.')
 
 
 pyblish.api.register_plugin(CollectNukeVersion)
