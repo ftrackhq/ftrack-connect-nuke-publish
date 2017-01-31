@@ -57,7 +57,7 @@ class PublishImageSequence(ftrack_connect_pipeline.asset.PyblishAsset):
 
         if general_options['publish_files_in_place']:
             for instance in self.pyblish_context:
-                if instance.data['family'] in ('ftrack.nuke.write',):
+                if instance.data['families'] == ['ftrack', 'write']:
                     instance.data['options']['location_name'] = (
                         self.in_place_location_name
                     )
