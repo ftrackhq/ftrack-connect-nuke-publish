@@ -35,6 +35,8 @@ class ExtractWriteNodes(pyblish.api.InstancePlugin):
 
         self.log.debug('Using component name: {0!r}'.format(component_name))
 
+        new_component = None
+
         single_file = os.path.isfile(file_comp)
         if single_file:
             # File exists.
@@ -52,7 +54,6 @@ class ExtractWriteNodes(pyblish.api.InstancePlugin):
                     'node_name': node_name
                 }
                 instance.data['ftrack_components'].append(new_component)
-
         else:
             # File does not exist, assume that it is a file sequence.
 
@@ -133,8 +134,8 @@ class ExtractWriteNodes(pyblish.api.InstancePlugin):
 
                 instance.data['ftrack_components'].append(new_component)
 
-            self.log.debug(
-                'Extracted {0!r} from {1!r}'.format(
-                    new_component, instance.name
-                )
+        self.log.debug(
+            'Extracted {0!r} from {1!r}'.format(
+                new_component, instance.name
             )
+        )
