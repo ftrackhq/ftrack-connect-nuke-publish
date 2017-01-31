@@ -84,17 +84,6 @@ class BuildPlugin(setuptools.Command):
             os.path.join(STAGING_PATH, 'hook')
         )
 
-        # Add dependencies.
-        modules = (
-            'pyblish-base',
-            (
-                'https://bitbucket.org/ftrack/ftrack-connect-pipeline/get/'
-                '{version}.zip#egg=ftrack-connect-pipeline-{version}'.format(
-                    version='0.3.0'
-                )
-            ),
-            'ftrack-python-api'
-        )
         for module in ('.', ):
             pip.main(
                 [
