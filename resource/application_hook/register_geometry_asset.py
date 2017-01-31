@@ -6,14 +6,14 @@ import functools
 import ftrack_api
 import ftrack_connect_pipeline.asset
 
-from ftrack_connect_nuke_publish.asset.geo import geo_asset
+from ftrack_connect_nuke_publish.asset.geometry import geometry_asset
 
 FTRACK_ASSET_TYPE = 'geo'
 
 
 def create_asset_publish():
     '''Return asset publisher.'''
-    return geo_asset.PublishGeo(
+    return geometry_asset.PublishGeo(
         description='publish geometry to ftrack.',
         asset_type_short=FTRACK_ASSET_TYPE
     )
