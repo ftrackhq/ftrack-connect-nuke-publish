@@ -35,6 +35,8 @@ class ExtractWriteNodes(pyblish.api.InstancePlugin):
 
         self.log.debug('Using component name: {0!r}'.format(component_name))
 
+        new_component = None
+
         single_file = os.path.isfile(file_comp)
         if single_file:
             # File exists.

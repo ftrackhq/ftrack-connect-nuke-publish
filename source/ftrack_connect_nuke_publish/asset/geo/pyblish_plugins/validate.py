@@ -16,29 +16,31 @@ class GeoPublishValidator(pyblish.api.InstancePlugin):
     optional = False
 
     def process(self, instance):
+        '''Validate *instance*.'''
         import nuke
+        import os
 
         node = nuke.toNode(instance.name)
-        file_comp = str(node['file'].value())
+        file_path = unicode(node['file'].value())
 
         self.log.debug(
-            'Validating {0} from {1}'.format(
-                file_comp, instance.name
-            )
+            'Validating {0} from {1}'.format(file_path, instance.name)
         )
 
-        import os
-        filename, extension = os.path.splitext(file_comp)
+        filename, extension = os.path.splitext(file_path)
 
-        # extension is not '.abc' does not work. Maybe a python bug?
+        # Extension is not '.abc' does not work.
+        #: TODO: Investigate this further.
         if extension.lower() != '.abc':
-            error_msg = 'Geometry file for node {0} is not an alembic file'.format(
-                instance.name
+            error_message = (
+                'Geometry file for node {0} is not an alembic file'.format(
+                    instance.name
                 )
-            assert False, error_msg
+            )
+            assert False, error_message
 
-        if not os.path.exists(file_comp):
-            error_msg = 'Alembic file for node {0} does not exist.'.format(
+        if not os.path.exists(file_path):
+            error_message = 'Alembic file for node {0} does not exist.'.format(
                 instance.name
-                )
-            assert False, error_msg
+            )
+            assert False, error_message

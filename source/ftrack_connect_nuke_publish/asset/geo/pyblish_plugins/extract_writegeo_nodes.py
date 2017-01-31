@@ -14,30 +14,25 @@ class ExtractWriteGeoNodes(pyblish.api.InstancePlugin):
 
     def process(self, instance):
         '''Process *instance* and extract geo.'''
+        import nuke
 
         self.log.debug(
-            'Started extracting write geo node {0!r}'.format(
+            'Started extracting write geo node {0!r}.'.format(
                 instance.name
             )
         )
 
-        import nuke
-
-        writegeo_node = nuke.toNode(instance.name)
-        file_comp = str(writegeo_node['file'].value())
-        node_name = str(writegeo_node['name'].value()).strip()
-        component_name = "alembic"
-        self.log.debug('Using component name: {0!r}'.format(component_name))
-
+        write_geo_node = nuke.toNode(instance.name)
         new_component = {
-            'path': file_comp,
-            'name': component_name,
-            'node_name': node_name
+            'path': unicode(write_geo_node['file'].value()),
+            'name': 'alembic',
+            'node_name': unicode(write_geo_node['name'].value()).strip()
         }
+
         instance.data['ftrack_components'].append(new_component)
 
         self.log.debug(
-            'Extracted {0!r} from {1!r}'.format(
+            'Extracted {0!r} from {1!r}.'.format(
                 new_component, instance.name
             )
         )

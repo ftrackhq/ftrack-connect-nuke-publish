@@ -51,8 +51,8 @@ class PublishGeo(ftrack_connect_pipeline.asset.PyblishAsset):
             item_options, general_options, selected_items
         )
         self.logger.debug(
-            'Updating nuke write geo nodes with "publish_files_in_place" option: '
-            '{0!r}'.format(general_options['publish_files_in_place'])
+            'Updating nuke write geo nodes with "publish_files_in_place" '
+            'option: {0!r}'.format(general_options['publish_files_in_place'])
         )
 
         if general_options['publish_files_in_place']:

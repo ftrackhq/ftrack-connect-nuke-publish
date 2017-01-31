@@ -12,7 +12,9 @@ class CollectWriteGeoNodes(pyblish.api.ContextPlugin):
     def process(self, context):
         '''Process *context* and add nuke write geo node instances.'''
         import nuke
+
         self.log.debug('Started collecting write geo nodes from scene.')
+
         selection = nuke.selectedNodes()
 
         for node in nuke.allNodes():
@@ -24,7 +26,7 @@ class CollectWriteGeoNodes(pyblish.api.ContextPlugin):
                 instance.data['ftrack_components'] = []
 
                 self.log.debug(
-                    'Collected Write Geo node instance {0!r} {1!r}.'.format(
+                    'Collected write geo node instance {0!r} {1!r}.'.format(
                         node.name(), instance
                     )
                 )
