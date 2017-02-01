@@ -16,6 +16,10 @@ class ImageSequencePublishValidator(pyblish.api.InstancePlugin):
     optional = False
 
     def check_frames(self, input_frames, write_node, instance_name):
+        '''Check that all the frames expressed in *input_frames* exists.
+        It'll use *write_node* and *instance_name* to fetch data and report.
+        '''
+
         import nuke
         import os
         import clique
