@@ -15,22 +15,17 @@ class ImageSequencePublishValidator(pyblish.api.InstancePlugin):
     label = 'Validate Image Sequence component.'
     optional = False
 
-    def process(self, instance):
-        '''Validate *instance*.'''
+    def check_frames(self, input_frames, write_node, instance_name):
         import nuke
         import os
         import clique
         import glob
 
-        write_node = nuke.toNode(instance.name)
-        file_comp = str(write_node['file'].value())
-        proxy_comp = str(write_node['proxy'].value())
-
         self.log.info(
-            'Validating {0} from {1}'.format(file_comp, instance.name)
+            'Validating {0} from {1}'.format(input_frames, instance_name)
         )
 
-        single_file = os.path.isfile(file_comp)
+        single_file = os.path.isfile(input_frames)
         if not single_file:
 
             first = str(int(nuke.root().knob('first_frame').value()))
@@ -99,5 +94,16 @@ class ImageSequencePublishValidator(pyblish.api.InstancePlugin):
 
         else:
             assert os.path.exists(
-                file_comp
-            ), 'File {0} does not exist!'.format(file_comp)
+                input_frames
+            ), 'File {0} does not exist!'.format(input_frames)
+
+    def process(self, instance):
+        '''Validate *instance*.'''
+        import nuke
+
+        write_node = nuke.toNode(instance.name)
+        file_comp = str(write_node['file'].value())
+        proxy_comp = str(write_node['proxy'].value())
+        for comp_data in [file_comp, proxy_comp]:
+            if comp_data:
+                self.check_frames(comp_data, write_node, instance.name)
