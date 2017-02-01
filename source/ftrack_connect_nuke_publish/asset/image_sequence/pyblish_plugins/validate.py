@@ -37,7 +37,7 @@ class ImageSequencePublishValidator(pyblish.api.InstancePlugin):
                 last = str(write_node['last'].value())
 
             # Always check how many frames are actually available.
-            frames = write_node['file'].value()
+            frames = input_frames
 
             try:
                 # Try to collect the sequence prefix, padding
