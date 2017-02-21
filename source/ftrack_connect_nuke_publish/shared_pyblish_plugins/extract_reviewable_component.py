@@ -2,10 +2,9 @@
 # :copyright: Copyright (c) 2016 ftrack
 
 import pyblish.api
-import tempfile
 
 
-class PreReviewableComponentExtract(pyblish.api.InstancePlugin):
+class ReviewableComponentExtract(pyblish.api.InstancePlugin):
     '''Create temporary Scene and WriteGeo nodes and initialize them.'''
 
     order = pyblish.api.ExtractorOrder - 0.1
@@ -35,84 +34,39 @@ class PreReviewableComponentExtract(pyblish.api.InstancePlugin):
             )
         )
 
+        import tempfile
         import nuke
-        camera_node = nuke.toNode(instance.name)
+        write = nuke.toNode(instance.name)
 
-        frame_range = instance.context.data['options'].get(
-            'frame_range', {}
+        # Get the input of the given write node.
+        input_node = write.input(0)
+
+        # Generate output file name for mov.
+        temp_review_mov = tempfile.NamedTemporaryFile(suffix='.mov').name
+
+        first = str(int(nuke.root().knob('first_frame').value()))
+        last = str(int(nuke.root().knob('last_frame').value()))
+
+        # Create a new write_node.
+        review_node = nuke.createNode('Write')
+        review_node.setInput(0, input_node)
+        review_node.nodename(name="write_review")
+        review_node['file'].setValue(temp_review_mov)
+        review_node['file_type'].setValue('mov')
+        review_node['mov64_codec'].setValue('png')
+
+        ranges = nuke.FrameRanges('{0}-{1}'.format(first, last))
+        nuke.render(review_node, ranges)
+
+        instance.data['ftrack_tmp_review_node'] = review_node
+        instance.context.data['options'].setdefault(
+            'ftrack_reviewable_component', temp_review_mov
         )
 
-        first = frame_range['start_frame']
-        last = frame_range['end_frame']
-
-        wn['file_type'].setValue('mov')
-        wn['mov64_codec'].setValue('png')
-
-        # scn = nuke.nodes.Scene()
-        # scn.setInput(0, camera_node)
-        # instance.data['nuke_scene'] = scn
-
-        # write = nuke.nodes.WriteGeo()
-        # write.setInput(0, scn)
-        # write['file_type'].setValue('abc')
-        # write['writeCameras'].setValue(True)
-        # write['writeGeometries'].setValue(False)
-        # write['writeAxes'].setValue(False)
-        # write['writePointClouds'].setValue(False)
-        # write['storageFormat'].setValue('Ogawa')
-        # write['use_limit'].setValue(True)
-        # write['first'].setValue(float(first))
-        # write['last'].setValue(float(last))
-
-        # instance.data['nuke_write'] = write
-
-
-class ReviewableComponentExtract(pyblish.api.InstancePlugin):
-    '''Prepare component to be published.'''
-
-    order = pyblish.api.ExtractorOrder
-
-    families = ['ftrack']
-    match = pyblish.api.Subset
-
-    def process(self, instance):
-
-        from ftrack_connect_pipeline import constant
-
-        make_reviewable = instance.context.data['options'].get(
-            constant.REVIEWABLE_COMPONENT_OPTION_NAME, False
-        )
-
-        has_reviewable = instance.context.data['options'].get(
-            'ftrack_reviewable_component'
-        )
-
-        if not make_reviewable or has_reviewable:
-            return
-
-        '''Process *instance*.'''
-        import nuke
         self.log.debug(
-            'Started extracting camera {0!r} with options '
-            '{1!r}.'.format(
-                instance.name, instance.data['options']
+            'Extracted Reviewable component from {0!r}'.format(
+                instance.name
             )
-        )
-
-        write_node = instance.data['nuke_write']
-        temporary_path = tempfile.mkstemp(suffix='.abc')[-1]
-        write_node['file'].setValue(temporary_path)
-
-        nuke.execute(write_node.name())
-
-        new_component = {
-            'name': '{0}.alembic'.format(instance.name),
-            'path': temporary_path,
-        }
-
-        instance.data['ftrack_components'].append(new_component)
-        self.log.debug(
-            'Extracted {0!r} from {1!r}'.format(new_component, instance.name)
         )
 
 
@@ -138,11 +92,14 @@ class PostReviewableComponentExtract(pyblish.api.InstancePlugin):
 
         if make_reviewable and not has_reviewable:
             self.log.debug(
-                'Post extracting nuke camera {0!r}'.format(
+                'Post extracting reviewable component {0!r}'.format(
                     instance.name
                 )
             )
 
             import nuke
-            nuke.delete(instance.data['nuke_write'])
-            nuke.delete(instance.data['nuke_scene'])
+            nuke.delete(instance.data['ftrack_tmp_review_node'])
+
+
+pyblish.api.register_plugin(ReviewableComponentExtract)
+pyblish.api.register_plugin(PostReviewableComponentExtract)
