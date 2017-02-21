@@ -12,6 +12,15 @@ class PublishGeo(ftrack_connect_pipeline.asset.PyblishAsset):
 
     enable_in_place_location_publish = True
 
+    def __init__(
+        self, description, asset_type_short=None,
+        enable_scene_as_reference=True,
+        enable_reviewable_component=True
+    ):
+        super(PublishGeo, self).__init__(
+            description, asset_type_short, True, False
+        )
+
     def get_options(self):
         '''Return global options.'''
         options = []
