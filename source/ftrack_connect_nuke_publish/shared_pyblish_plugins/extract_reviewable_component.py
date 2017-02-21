@@ -85,11 +85,7 @@ class PostReviewableComponentExtract(pyblish.api.InstancePlugin):
             constant.REVIEWABLE_COMPONENT_OPTION_NAME, False
         )
 
-        has_reviewable = instance.context.data['options'].get(
-            'ftrack_reviewable_component'
-        )
-
-        if make_reviewable and not has_reviewable:
+        if make_reviewable and instance.data.get('ftrack_tmp_review_node'):
             self.log.debug(
                 'Post extracting reviewable component {0!r}'.format(
                     instance.name
