@@ -50,7 +50,6 @@ class ReviewableComponentExtract(pyblish.api.InstancePlugin):
         # Create a new write_node.
         review_node = nuke.createNode('Write')
         review_node.setInput(0, input_node)
-        review_node.nodename(name="write_review")
         review_node['file'].setValue(temp_review_mov)
         review_node['file_type'].setValue('mov')
         review_node['mov64_codec'].setValue('png')
@@ -58,7 +57,7 @@ class ReviewableComponentExtract(pyblish.api.InstancePlugin):
         ranges = nuke.FrameRanges('{0}-{1}'.format(first, last))
         nuke.render(review_node, ranges)
 
-        instance.data['ftrack_tmp_review_node'] = review_node
+        instance.data['ftrack_tmp_review_node'] = review_node['name'].value()
         instance.context.data['options'].setdefault(
             'ftrack_reviewable_component', temp_review_mov
         )
@@ -98,7 +97,8 @@ class PostReviewableComponentExtract(pyblish.api.InstancePlugin):
             )
 
             import nuke
-            nuke.delete(instance.data['ftrack_tmp_review_node'])
+            node_name = instance.data['ftrack_tmp_review_node']
+            nuke.delete(nuke.toNode(node_name))
 
 
 pyblish.api.register_plugin(ReviewableComponentExtract)
