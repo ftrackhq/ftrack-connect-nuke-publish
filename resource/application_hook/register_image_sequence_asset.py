@@ -24,7 +24,7 @@ def register_asset_plugin(session, event):
     image_sequence = ftrack_connect_pipeline.asset.Asset(
         identifier=FTRACK_ASSET_TYPE,
         label='Media',
-        icon='video_collection',
+        icon='video-collection',
         create_asset_publish=create_asset_publish
     )
     # Register media asset on session. This makes sure that discover is called
