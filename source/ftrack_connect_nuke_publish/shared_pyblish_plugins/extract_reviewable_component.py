@@ -2,6 +2,7 @@
 # :copyright: Copyright (c) 2016 ftrack
 
 import pyblish.api
+from ftrack_connect_pipeline import constant
 
 
 class ReviewableComponentExtract(pyblish.api.InstancePlugin):
@@ -9,12 +10,10 @@ class ReviewableComponentExtract(pyblish.api.InstancePlugin):
 
     order = pyblish.api.ExtractorOrder - 0.1
 
-    families = ['ftrack']
+    families = constant.REVIEW_FAMILY_PYBLISH
     match = pyblish.api.Subset
 
     def process(self, instance):
-
-        from ftrack_connect_pipeline import constant
 
         make_reviewable = instance.context.data['options'].get(
             constant.REVIEWABLE_COMPONENT_OPTION_NAME, False
@@ -74,7 +73,7 @@ class PostReviewableComponentExtract(pyblish.api.InstancePlugin):
 
     order = pyblish.api.ExtractorOrder + 0.1
 
-    families = ['ftrack']
+    families = constant.REVIEW_FAMILY_PYBLISH
     match = pyblish.api.Subset
 
     def process(self, instance):
