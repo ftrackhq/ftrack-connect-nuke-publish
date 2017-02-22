@@ -6,7 +6,7 @@ from ftrack_connect_pipeline import constant
 
 
 class ReviewableComponentExtract(pyblish.api.InstancePlugin):
-    '''Create temporary Scene and WriteGeo nodes and initialize them.'''
+    '''Create a reviewable component.'''
 
     order = pyblish.api.ExtractorOrder - 0.1
 
@@ -14,6 +14,7 @@ class ReviewableComponentExtract(pyblish.api.InstancePlugin):
     match = pyblish.api.Subset
 
     def process(self, instance):
+        '''Process *instance* and add review component to context.'''
 
         make_reviewable = instance.context.data['options'].get(
             constant.REVIEWABLE_COMPONENT_OPTION_NAME, False
@@ -69,7 +70,7 @@ class ReviewableComponentExtract(pyblish.api.InstancePlugin):
 
 
 class PostReviewableComponentExtract(pyblish.api.InstancePlugin):
-    '''Remove temporary Scene and WriteGeo nodes.'''
+    '''Remove nodes used to generate a reviewable component.'''
 
     order = pyblish.api.ExtractorOrder + 0.1
 
