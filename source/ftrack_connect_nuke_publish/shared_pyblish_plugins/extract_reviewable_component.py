@@ -42,6 +42,9 @@ class ReviewableComponentExtract(pyblish.api.InstancePlugin):
         review_node['file_type'].setValue('mov')
         review_node['mov64_codec'].setValue('png')
 
+        # Store the temp write node for later deletion.
+        instance.data['ftrack_tmp_review_node'] = review_node['name'].getValue()
+
         ranges = nuke.FrameRanges('{0}-{1}'.format(first, last))
         nuke.render(review_node, ranges)
 
@@ -49,7 +52,6 @@ class ReviewableComponentExtract(pyblish.api.InstancePlugin):
             'name': 'web-reviewable',
             'path': temp_review_mov
         }]
-
 
         self.log.debug(
             'Extracted Reviewable component from {0!r}'.format(
