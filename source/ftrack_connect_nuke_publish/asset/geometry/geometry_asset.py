@@ -53,7 +53,7 @@ class PublishGeo(ftrack_connect_pipeline.asset.PyblishAsset):
         for instance in filter_instances(self.pyblish_context):
             options.append({
                 'label': instance.name,
-                'name': instance.name,
+                'name': instance.id,
                 'value': instance.data.get('publish', False)
             })
 
