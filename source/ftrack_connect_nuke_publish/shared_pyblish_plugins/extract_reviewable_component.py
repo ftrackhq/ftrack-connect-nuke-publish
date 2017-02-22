@@ -16,18 +16,6 @@ class ReviewableComponentExtract(pyblish.api.InstancePlugin):
     def process(self, instance):
         '''Process *instance* and add review component to context.'''
 
-        make_reviewable = instance.context.data['options'].get(
-            constant.REVIEWABLE_COMPONENT_OPTION_NAME, False
-        )
-
-        has_reviewable = instance.context.data['options'].get(
-            'ftrack_reviewable_component'
-        )
-
-        if not make_reviewable or has_reviewable:
-            return
-
-        '''Process *instance*.'''
         self.log.debug(
             'Pre extracting reviewable component {0!r}'.format(
                 instance.name
@@ -57,10 +45,11 @@ class ReviewableComponentExtract(pyblish.api.InstancePlugin):
         ranges = nuke.FrameRanges('{0}-{1}'.format(first, last))
         nuke.render(review_node, ranges)
 
-        instance.data['ftrack_tmp_review_node'] = review_node['name'].value()
-        instance.context.data['options'].setdefault(
-            'ftrack_reviewable_component', temp_review_mov
-        )
+        instance.data['ftrack_web_reviewable_components'] = [{
+            'name': 'web-reviewable',
+            'path': temp_review_mov
+        }]
+
 
         self.log.debug(
             'Extracted Reviewable component from {0!r}'.format(
@@ -79,22 +68,15 @@ class PostReviewableComponentExtract(pyblish.api.InstancePlugin):
 
     def process(self, instance):
         '''Process *instance*.'''
-        from ftrack_connect_pipeline import constant
-
-        make_reviewable = instance.context.data['options'].get(
-            constant.REVIEWABLE_COMPONENT_OPTION_NAME, False
+        self.log.debug(
+            'Post extracting reviewable component {0!r}'.format(
+                instance.name
+            )
         )
 
-        if make_reviewable and instance.data.get('ftrack_tmp_review_node'):
-            self.log.debug(
-                'Post extracting reviewable component {0!r}'.format(
-                    instance.name
-                )
-            )
-
-            import nuke
-            node_name = instance.data['ftrack_tmp_review_node']
-            nuke.delete(nuke.toNode(node_name))
+        import nuke
+        node_name = instance.data['ftrack_tmp_review_node']
+        nuke.delete(nuke.toNode(node_name))
 
 
 pyblish.api.register_plugin(ReviewableComponentExtract)
