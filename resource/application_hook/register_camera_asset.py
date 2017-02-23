@@ -25,7 +25,7 @@ def register_asset_plugin(session, event):
     camera = ftrack_connect_pipeline.asset.Asset(
         identifier=FTRACK_ASSET_TYPE,
         label='Camera',
-        icon='http://www.clipartbest.com/cliparts/LiK/dLB/LiKdLB6zT.png',
+        icon='videocam',
         create_asset_publish=create_asset_publish
     )
     # Register camera asset on session. This makes sure that discover is called
