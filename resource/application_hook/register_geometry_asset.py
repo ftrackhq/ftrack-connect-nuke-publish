@@ -15,7 +15,8 @@ def create_asset_publish():
     '''Return asset publisher.'''
     return geometry_asset.PublishGeo(
         description='publish geometry to ftrack.',
-        asset_type_short=FTRACK_ASSET_TYPE
+        asset_type_short=FTRACK_ASSET_TYPE,
+        enable_reviewable_component=False
     )
 
 

@@ -17,15 +17,6 @@ def filter_instances(pyblish_context):
 class PublishCamera(ftrack_connect_pipeline.asset.PyblishAsset):
     '''Handle publish of nuke cameras.'''
 
-    def __init__(
-        self, description, asset_type_short=None,
-        enable_scene_as_reference=True,
-        enable_reviewable_component=True
-    ):
-        super(PublishCamera, self).__init__(
-            description, asset_type_short, True, False
-        )
-
     def get_options(self):
         '''Return global options.'''
         from ftrack_connect_pipeline.ui.widget.field import start_end_frame
