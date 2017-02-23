@@ -84,16 +84,15 @@ class BuildPlugin(setuptools.Command):
             os.path.join(STAGING_PATH, 'hook')
         )
 
-        for module in ('.', ):
-            pip.main(
-                [
-                    'install',
-                    module,
-                    '--target',
-                    os.path.join(STAGING_PATH, 'dependencies'),
-                    '--process-dependency-links'
-                ]
-            )
+        pip.main(
+            [
+                'install',
+                '.',
+                '--target',
+                os.path.join(STAGING_PATH, 'dependencies'),
+                '--process-dependency-links'
+            ]
+        )
 
         result_path = shutil.make_archive(
             os.path.join(
@@ -135,7 +134,7 @@ setup(
         (
             'https://bitbucket.org/ftrack/ftrack-connect-pipeline/get/'
             '{version}.zip#egg=ftrack-connect-pipeline-{version}'.format(
-                version='0.5.0'
+                version='0.6.0'
             )
         )
     ],

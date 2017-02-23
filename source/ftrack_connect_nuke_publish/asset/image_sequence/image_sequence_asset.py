@@ -5,6 +5,15 @@ import nuke
 import ftrack_connect_pipeline.asset
 
 
+def filter_instances(pyblish_context):
+    '''Return camera instances from *pyblish_context*.'''
+    match = set(['write', 'ftrack'])
+    return filter(
+        lambda instance: match.issubset(instance.data['families']),
+        pyblish_context
+    )
+
+
 class PublishImageSequence(ftrack_connect_pipeline.asset.PyblishAsset):
     '''Handle publish of nuke image sequences.'''
 
@@ -30,16 +39,13 @@ class PublishImageSequence(ftrack_connect_pipeline.asset.PyblishAsset):
 
     def get_publish_items(self):
         '''Return list of items that can be published.'''
-        match = set(['write', 'ftrack'])
-
         options = []
-        for instance in self.pyblish_context:
-            if match.issubset(instance.data['families']):
-                options.append({
-                    'label': instance.name,
-                    'name': instance.name,
-                    'value': instance.data.get('publish', False)
-                })
+        for instance in filter_instances(self.pyblish_context):
+            options.append({
+                'label': instance.name,
+                'name': instance.id,
+                'value': instance.data.get('publish', False)
+            })
 
         return options
 
@@ -68,4 +74,9 @@ class PublishImageSequence(ftrack_connect_pipeline.asset.PyblishAsset):
         for node in nuke.selectedNodes():
             selection.append(node.name())
 
-        return selection
+        # Return list of instance ids for selected items in scene that match the
+        # family.
+        return [
+            instance.id for instance in filter_instances(self.pyblish_context)
+            if instance.name in selection
+        ]
