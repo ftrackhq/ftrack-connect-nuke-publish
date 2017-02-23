@@ -15,7 +15,8 @@ def create_asset_publish():
     '''Return asset publisher.'''
     return geometry_asset.PublishGeo(
         description='publish geometry to ftrack.',
-        asset_type_short=FTRACK_ASSET_TYPE
+        asset_type_short=FTRACK_ASSET_TYPE,
+        enable_reviewable_component=False
     )
 
 
@@ -24,7 +25,7 @@ def register_asset_plugin(session, event):
     geo = ftrack_connect_pipeline.asset.Asset(
         identifier=FTRACK_ASSET_TYPE,
         label='Geometry',
-        icon='http://www.clipartbest.com/cliparts/9cz/EzE/9czEzE8yi.png',
+        icon='extension',
         create_asset_publish=create_asset_publish
     )
     # Register geo asset on session. This makes sure that discover is called

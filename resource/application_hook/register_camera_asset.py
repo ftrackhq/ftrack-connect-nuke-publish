@@ -15,7 +15,8 @@ def create_asset_publish():
     '''Return asset publisher.'''
     return camera_asset.PublishCamera(
         description='publish camera to ftrack.',
-        asset_type_short=FTRACK_ASSET_TYPE
+        asset_type_short=FTRACK_ASSET_TYPE,
+        enable_reviewable_component=False
     )
 
 
@@ -24,7 +25,7 @@ def register_asset_plugin(session, event):
     camera = ftrack_connect_pipeline.asset.Asset(
         identifier=FTRACK_ASSET_TYPE,
         label='Camera',
-        icon='http://www.clipartbest.com/cliparts/LiK/dLB/LiKdLB6zT.png',
+        icon='videocam',
         create_asset_publish=create_asset_publish
     )
     # Register camera asset on session. This makes sure that discover is called
