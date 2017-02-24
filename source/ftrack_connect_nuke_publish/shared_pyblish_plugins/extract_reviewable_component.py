@@ -45,6 +45,11 @@ class ReviewableComponentExtract(pyblish.api.InstancePlugin):
         # Store the temp write node for later deletion.
         instance.data['ftrack_tmp_review_node'] = review_node['name'].getValue()
 
+        if write['use_limit'].getValue():
+            first = write['first'].getValue()
+            last = write['last'].getValue()
+            review_node['use_limit'].setValue(True)
+
         ranges = nuke.FrameRanges('{0}-{1}'.format(first, last))
         nuke.render(review_node, ranges)
 
