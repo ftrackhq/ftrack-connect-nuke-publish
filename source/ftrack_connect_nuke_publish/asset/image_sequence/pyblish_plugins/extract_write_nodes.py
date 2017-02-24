@@ -69,29 +69,22 @@ class ExtractWriteNodes(pyblish.api.InstancePlugin):
             # Always check how many frames are actually available.
             frames = write_node['file'].value()
 
-            try:
-                # Try to collect the sequence prefix, padding
-                # and extension. If this fails with a ValueError
-                # we are probably handling a non-sequence file.
-                # If so rely on the first_frame and last_frame
-                # of the root node.
-                prefix, padding, extension = frames.split('.')
-            except ValueError:
-                print(
-                    'Could not determine prefix, padding '
-                    'and extension from "{0}".'.format(frames)
-                )
-            else:
-                root = os.path.dirname(prefix)
-                files = glob.glob('{0}/*.{1}'.format(root, extension))
-                collections = clique.assemble(files)
+            fragments = frames.split('.')
+            extension = fragments.pop()
+            # Pop padding.
+            fragments.pop()
+            prefix = '.'.join(fragments)
 
-                for collection in collections[0]:
-                    if prefix in collection.head:
-                        indexes = list(collection.indexes)
-                        first = str(indexes[0])
-                        last = str(indexes[-1])
-                        break
+            root = os.path.dirname(prefix)
+            files = glob.glob('{0}/*.{1}'.format(root, extension))
+            collections = clique.assemble(files)
+
+            for collection in collections[0]:
+                if prefix in collection.head:
+                    indexes = list(collection.indexes)
+                    first = str(indexes[0])
+                    last = str(indexes[-1])
+                    break
 
             if first != last:
                 sequence_path = u'{0} [{1}-{2}]'.format(
