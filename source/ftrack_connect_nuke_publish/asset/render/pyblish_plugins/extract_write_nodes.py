@@ -8,7 +8,7 @@ import glob
 
 
 class ExtractWriteNodes(pyblish.api.InstancePlugin):
-    '''Extract nuke media from write nodes.'''
+    '''Extract nuke render from write nodes.'''
 
     order = pyblish.api.ExtractorOrder
 
@@ -16,7 +16,7 @@ class ExtractWriteNodes(pyblish.api.InstancePlugin):
     match = pyblish.api.Subset
 
     def process(self, instance):
-        '''Process *instance* and extract media.'''
+        '''Process *instance* and extract render.'''
 
         self.log.debug(
             'Started extracting write node {0!r}'.format(
