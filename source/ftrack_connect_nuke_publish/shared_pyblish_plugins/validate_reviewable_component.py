@@ -24,6 +24,12 @@ class ReviewableComponentValidator(pyblish.api.InstancePlugin):
         '''Validate *instance*.'''
         import nuke
 
+        self.log.debug(
+            'Validating Reviewable component generation for {0!r}'.format(
+                instance.name
+            )
+        )
+
         write_node = nuke.toNode(instance.name)
         input_node = write_node.input(0)
         assert input_node, (
