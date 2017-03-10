@@ -4,7 +4,7 @@
 import pyblish.api
 
 
-class ImageSequencePublishValidator(pyblish.api.InstancePlugin):
+class RenderPublishValidator(pyblish.api.InstancePlugin):
     '''Validate that write node output exists.'''
 
     order = pyblish.api.ValidatorOrder
