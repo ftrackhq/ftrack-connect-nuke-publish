@@ -14,8 +14,8 @@ def filter_instances(pyblish_context):
     )
 
 
-class PublishImageSequence(ftrack_connect_pipeline.asset.PyblishAsset):
-    '''Handle publish of nuke image sequences.'''
+class PublishRender(ftrack_connect_pipeline.asset.PyblishAsset):
+    '''Handle publish of nuke renders.'''
 
     in_place_location_name = 'ftrack.unmanaged'
 
@@ -33,7 +33,7 @@ class PublishImageSequence(ftrack_connect_pipeline.asset.PyblishAsset):
                 'value': False
             })
 
-        default_options = super(PublishImageSequence, self).get_options()
+        default_options = super(PublishRender, self).get_options()
 
         return default_options + options
 
@@ -53,7 +53,7 @@ class PublishImageSequence(ftrack_connect_pipeline.asset.PyblishAsset):
         self, item_options, general_options, selected_items
     ):
         '''Update *item_options* and *general_options*.'''
-        super(PublishImageSequence, self).update_with_options(
+        super(PublishRender, self).update_with_options(
             item_options, general_options, selected_items
         )
         self.logger.debug(

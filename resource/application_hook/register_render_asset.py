@@ -6,30 +6,30 @@ import functools
 import ftrack_api
 import ftrack_connect_pipeline.asset
 
-from ftrack_connect_nuke_publish.asset.image_sequence import image_sequence_asset
+from ftrack_connect_nuke_publish.asset.render import render_asset
 
-FTRACK_ASSET_TYPE = 'img'
+FTRACK_ASSET_TYPE = 'render'
 
 
 def create_asset_publish():
     '''Return asset publisher.'''
-    return image_sequence_asset.PublishImageSequence(
-        description='publish media to ftrack.',
+    return render_asset.PublishRender(
+        description='publish render to ftrack.',
         asset_type_short=FTRACK_ASSET_TYPE
     )
 
 
 def register_asset_plugin(session, event):
     '''Register asset plugin.'''
-    image_sequence = ftrack_connect_pipeline.asset.Asset(
+    render = ftrack_connect_pipeline.asset.Asset(
         identifier=FTRACK_ASSET_TYPE,
-        label='Media',
+        label='Render',
         icon='video-collection',
         create_asset_publish=create_asset_publish
     )
-    # Register media asset on session. This makes sure that discover is called
+    # Register render asset on session. This makes sure that discover is called
     # for import and publish.
-    image_sequence.register(session)
+    render.register(session)
 
 
 def register(session):
