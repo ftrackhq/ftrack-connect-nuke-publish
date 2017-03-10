@@ -13,10 +13,7 @@ class ReviewableComponentValidator(pyblish.api.InstancePlugin):
     families = constant.REVIEW_FAMILY_PYBLISH
     match = pyblish.api.Subset
 
-    label = (
-        'Validate that write has a valid input'
-        ' to generate a reviewable component.'
-    )
+    label = 'Validate reviewable write node.'
 
     optional = False
 
