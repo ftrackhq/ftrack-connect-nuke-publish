@@ -25,7 +25,7 @@ class ReviewableComponentValidator(pyblish.api.InstancePlugin):
         import nuke
 
         self.log.debug(
-            'Validating Reviewable component generation for {0!r}'.format(
+            u'Validating Reviewable component generation for {0!r}'.format(
                 instance.name
             )
         )
