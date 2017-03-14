@@ -46,7 +46,8 @@ def open_publish():
     ftrack_connect_pipeline.ui.publish.open(session)
 
 
-def change_context():
+def open_change_context():
+    '''Open change context dialog.'''
     from ftrack_connect_pipeline.ui.widget import context_selector
     from ftrack_connect_pipeline import util
     current_entity = util.get_ftrack_entity()
@@ -57,4 +58,4 @@ def change_context():
 nukeMenu = nuke.menu('Nuke')
 ftrackMenu = nukeMenu.addMenu('&ftrack new')
 ftrackMenu.addCommand('Publish', open_publish)
-ftrackMenu.addCommand('Switch Context', change_context)
+ftrackMenu.addCommand('Switch Context', open_change_context)
