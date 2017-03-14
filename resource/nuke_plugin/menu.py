@@ -51,7 +51,7 @@ def change_context():
     from ftrack_connect_pipeline import util
     current_entity = util.get_ftrack_entity()
     g = context_selector.GlobalSwitch(current_entity)
-    g.show()
+    g.exec_()
 
 
 nukeMenu = nuke.menu('Nuke')
