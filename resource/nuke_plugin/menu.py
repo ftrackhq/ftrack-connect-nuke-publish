@@ -2,7 +2,6 @@
 # :copyright: Copyright (c) 2016 ftrack
 
 import nuke
-
 registered_plugins = False
 
 
@@ -47,6 +46,15 @@ def open_publish():
     ftrack_connect_pipeline.ui.publish.open(session)
 
 
+def change_context():
+    from ftrack_connect_pipeline.ui.widget import context_selector
+    from ftrack_connect_pipeline import util
+    current_entity = util.get_ftrack_entity()
+    g = context_selector.GlobalSwitch(current_entity)
+    g.show()
+
+
 nukeMenu = nuke.menu('Nuke')
 ftrackMenu = nukeMenu.addMenu('&ftrack new')
 ftrackMenu.addCommand('Publish', open_publish)
+ftrackMenu.addCommand('Switch Context', change_context)
