@@ -27,6 +27,17 @@ publish = ftrack_connect_pipeline.publish.Publish(
 )
 
 nuke_menu = nuke.menu('Nuke')
-ftrack_menu = nuke_menu.addMenu('&ftrack new')
-ftrack_menu.addCommand('Publish', publish.open)
-ftrack_menu.addCommand('Switch Context', global_context_switch.open)
+
+ftrack_menu = nuke_menu.addMenu('&ftrack')
+
+ftrack_menu.addSeparator()
+
+publish_submenu = ftrack_menu.addMenu('Beta')
+
+publish_submenu.addCommand(
+    'Publish', publish.open
+)
+
+publish_submenu.addCommand(
+    'Switch Context', global_context_switch.open
+)
