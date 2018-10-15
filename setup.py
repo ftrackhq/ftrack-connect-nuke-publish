@@ -130,7 +130,7 @@ setup(
     install_requires=[
         'clique==1.3.1',
         'pyblish-base >= 1.4.3',
-        'ftrack-connect-pipeline'
+        'ftrack-connect-pipeline < 1'
     ],
     dependency_links=[
         (
