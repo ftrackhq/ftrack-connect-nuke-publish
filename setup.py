@@ -135,7 +135,7 @@ setup(
     dependency_links=[
         (
             'https://bitbucket.org/ftrack/ftrack-connect-pipeline/get/'
-            '{0}.tar.gz#egg=ftrack-connect-pipeline-{0}'.format(
+            '{0}.zip#egg=ftrack-connect-pipeline-{0}'.format(
                 FTRACK_CONNECT_PIPELINE_VERSION
             )
         )
