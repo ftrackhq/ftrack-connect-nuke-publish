@@ -9,7 +9,12 @@ Release Notes
 
 .. release:: Upcoming
 
-        ..change:: changed
+    ..change:: changed
+        :tags: Setup
+
+        Build resultant folder renamed with the plugin name + version
+
+    ..change:: changed
         :tags: Setup
 
         ftrack-connect-pipeline version updated to 0.8.4

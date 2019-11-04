@@ -4,18 +4,22 @@
 import os
 import re
 import shutil
-import pip
-
-if not pip.__version__.split('.') >= ['19', '3', '0']:
-    raise ValueError('Pip should be version 19.3.0 or higher')
 
 from setuptools import setup, find_packages
 from setuptools.command.test import test as TestCommand
 import setuptools
+from pkg_resources import parse_version
+
+import pip
+
+if parse_version(pip.__version__) < parse_version('19.3.0'):
+    raise ValueError('Pip should be version 19.3.0 or higher')
 
 from pip._internal import main as pip_main
 
 FTRACK_CONNECT_PIPELINE_VERSION = '0.8.4'
+
+PLUGIN_NAME = 'ftrack-connect-nuke-publish-{0}'
 
 ROOT_PATH = os.path.dirname(os.path.realpath(__file__))
 SOURCE_PATH = os.path.join(ROOT_PATH, 'source')
@@ -34,7 +38,7 @@ BUILD_PATH = os.path.join(
 )
 
 STAGING_PATH = os.path.join(
-    BUILD_PATH, 'plugin'
+    BUILD_PATH, PLUGIN_NAME
 )
 
 # Read version from source.
@@ -45,6 +49,8 @@ with open(os.path.join(
         r'.*__version__ = \'(.*?)\'', _version_file.read(), re.DOTALL
     ).group(1)
 
+# Update staging path with the plugin version
+STAGING_PATH = STAGING_PATH.format(VERSION)
 
 # Custom commands.
 class PyTest(TestCommand):
@@ -103,7 +109,7 @@ class BuildPlugin(setuptools.Command):
         result_path = shutil.make_archive(
             os.path.join(
                 BUILD_PATH,
-                'ftrack-connect-nuke-publish-{0}'.format(VERSION)
+                PLUGIN_NAME.format(VERSION)
             ),
             'zip',
             STAGING_PATH
